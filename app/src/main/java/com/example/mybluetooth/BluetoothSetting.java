@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,8 +26,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import android.app.FragmentManager;
+import android.app.Activity;
+import android.app.FragmentTransaction;
 
 import static android.text.TextUtils.split;
 
@@ -56,6 +63,11 @@ public class BluetoothSetting extends AppCompatActivity {
     private final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
     private final static int CONNECTING_STATUS = 3; // used in bluetooth handler to identify message status
 
+    private HomeFrag homeFrag;
+    private ChartFrag chartFrag;
+    private AlarmFrag alarmFrag;
+    private SetFrag setFrag;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +88,11 @@ public class BluetoothSetting extends AppCompatActivity {
         mDevicesListView.setAdapter(mBTArrayAdapter); // assign model to view
         mDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
+        homeFrag = new HomeFrag();
+        chartFrag = new ChartFrag();
+        alarmFrag = new AlarmFrag();
+        setFrag = new SetFrag();
+
 
         mHandler = new Handler(){
             public void handleMessage(Message msg){
@@ -87,8 +104,13 @@ public class BluetoothSetting extends AppCompatActivity {
                     catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                    mReadBuffer.setText(readMessage);
+                    String[] array  = readMessage.split(",");
+                    //temp_values.add(Float.parseFloat(array[0]));
+                    mReadBuffer.setText(array[0]);
 
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArray("array",array);
+                    chartFrag.setArguments(bundle);
                 }
 
                 if(msg.what == CONNECTING_STATUS){

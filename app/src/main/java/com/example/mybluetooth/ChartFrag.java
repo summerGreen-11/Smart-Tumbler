@@ -34,19 +34,31 @@ public class ChartFrag extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.chartfrag,container,false);
+
+        Bundle bundle = getArguments();
+        String[] temparray = bundle.getStringArray("array");
+
         lineChart = (LineChart) view.findViewById(R.id.linechart);//layout의 id
+        lineChart.setHighlightPerDragEnabled(true);
+        lineChart.setTouchEnabled(true);
+        lineChart.setDragEnabled(true);
+        lineChart.setScaleEnabled(true);
+        lineChart.setDrawGridBackground(false);
+        lineChart.setPinchZoom(true);
+        lineChart.setBackgroundColor(Color.LTGRAY);
+
         LineData chartData = new LineData();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < temparray.length; i++) {
 
-            float val = (float) (Math.random() * 10);
+            float val = Float.parseFloat(temparray[i]);
             entry_chart.add(new Entry(i, val));
         }
 
         LineDataSet lineDataSet = new LineDataSet(entry_chart, "graph1");
         chartData.addDataSet(lineDataSet);
 
-       // lineDataSet.setColor(Color.BLACK);
+        // lineDataSet.setColor(Color.BLACK);
         //lineDataSet.setCircleColor(Color.BLACK);
 
         lineDataSet.setFillAlpha(65);

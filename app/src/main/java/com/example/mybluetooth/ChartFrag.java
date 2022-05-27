@@ -36,7 +36,7 @@ public class ChartFrag extends Fragment {
         view = inflater.inflate(R.layout.chartfrag,container,false);
 
         Bundle bundle = getArguments();
-        String[] temparray = bundle.getStringArray("array");
+        String chk = bundle.getString("chk");
 
         lineChart = (LineChart) view.findViewById(R.id.linechart);//layout의 id
         lineChart.setHighlightPerDragEnabled(true);
@@ -49,10 +49,20 @@ public class ChartFrag extends Fragment {
 
         LineData chartData = new LineData();
 
-        for (int i = 0; i < temparray.length; i++) {
+        if(chk == "enabled") {
+            String[] temparray = bundle.getStringArray("array");
+            for (int i = 0; i < temparray.length; i++) {
 
-            float val = Float.parseFloat(temparray[i]);
-            entry_chart.add(new Entry(i, val));
+                float val = Float.parseFloat(temparray[i]);
+                entry_chart.add(new Entry(i, val));
+            }
+        }
+        else{
+            for (int i = 0; i < 10; i++) {
+
+                float val = (float) (Math.random() * 10);
+                entry_chart.add(new Entry(i, val));
+            }
         }
 
         LineDataSet lineDataSet = new LineDataSet(entry_chart, "graph1");
@@ -71,6 +81,7 @@ public class ChartFrag extends Fragment {
         lineChart.setData(chartData);
 
         lineChart.invalidate();
+
         return view;
     }
 }

@@ -68,6 +68,8 @@ public class BluetoothSetting extends AppCompatActivity {
     private AlarmFrag alarmFrag;
     private SetFrag setFrag;
 
+    private String BTchk;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,8 +184,17 @@ public class BluetoothSetting extends AppCompatActivity {
                 // The user picked a contact.
                 // The Intent's data Uri identifies which contact was selected.
                 mBluetoothStatus.setText("Enabled");
-            } else
+                BTchk = "enabled";
+                Bundle bundle = new Bundle();
+                bundle.putString("BTchk",BTchk);
+                chartFrag.setArguments(bundle);
+            } else {
+                BTchk = "disenabled";
+                Bundle bundle = new Bundle();
+                bundle.putString("BTchk",BTchk);
+                chartFrag.setArguments(bundle);
                 mBluetoothStatus.setText("Disabled");
+            }
         }
     }
 

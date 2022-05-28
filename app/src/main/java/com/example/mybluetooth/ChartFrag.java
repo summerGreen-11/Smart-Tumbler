@@ -35,9 +35,6 @@ public class ChartFrag extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.chartfrag,container,false);
 
-        Bundle bundle = getArguments();
-        String chk = bundle.getString("chk");
-
         lineChart = (LineChart) view.findViewById(R.id.linechart);//layout의 id
         lineChart.setHighlightPerDragEnabled(true);
         lineChart.setTouchEnabled(true);
@@ -49,8 +46,12 @@ public class ChartFrag extends Fragment {
 
         LineData chartData = new LineData();
 
-        if(chk == "enabled") {
-            String[] temparray = bundle.getStringArray("array");
+        Bundle bundle = getArguments();
+        String[] temparray = new String[20];
+        temparray = bundle.getStringArray("array");
+
+        if(temparray != null) {
+
             for (int i = 0; i < temparray.length; i++) {
 
                 float val = Float.parseFloat(temparray[i]);

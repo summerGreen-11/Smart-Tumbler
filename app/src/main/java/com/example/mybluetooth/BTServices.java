@@ -272,7 +272,7 @@ public class BTServices extends Service {
             int mByte;
             while (true) {
                 try {
-                    SystemClock.sleep(1000);
+                    //SystemClock.sleep(1000);
                     mByte= inS.read(buffer);
                     String readMessage = new String(buffer, 0, mByte);
                     // Send the obtained bytes to the UI Activity via handler

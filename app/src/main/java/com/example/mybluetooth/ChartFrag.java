@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,8 @@ public class ChartFrag extends Fragment {
     private Handler mHandler;
     private List<Float> temp_values = new ArrayList<>();
 
+    private TextView bufferText;
+
     public final static int REQUEST_ENABLE_BT = 1; // used to identify adding bluetooth names
     public final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
     public final static int CONNECTING_STATUS = 3; // used in bluetooth handler to identify message status
@@ -57,7 +60,9 @@ public class ChartFrag extends Fragment {
         lineChart.setPinchZoom(true);
         lineChart.setBackgroundColor(Color.LTGRAY);
 
-        temp_values.add(0f);
+        bufferText = (TextView) view.findViewById(R.id.buffertext);
+
+        //temp_values.add(0f);
 
         mHandler=new Handler(){
             @Override
@@ -70,18 +75,19 @@ public class ChartFrag extends Fragment {
                     catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                        temp_values.add(Float.parseFloat(readMessage));
+                    temp_values.add(Float.parseFloat(readMessage));
+                    bufferText.setText(readMessage);
                 }
             }
         };
 
         LineData chartData = new LineData();
         if(temp_values.size() > 0){
-        for (int i = 0; i < temp_values.size(); i++) {
-            entry_chart.add(new Entry(i, temp_values.get(i)));
+            for (int i = 0; i < temp_values.size(); i++) {
+                entry_chart.add(new Entry(i, temp_values.get(i)));
+            }
         }
-        }
-         else{
+        else{
             for (int i = 0; i < 10; i++) {
                 float val = (float) (Math.random() * 10);
                 entry_chart.add(new Entry(i, val));

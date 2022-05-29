@@ -49,7 +49,7 @@ public class BTServices extends Service {
     public BTServices() {
     }
     private BluetoothAdapter mBluetoothAdapter;
-    public static final String B_DEVICE = "green";
+//    public static final String B_DEVICE = "green";
     public static final String B_UUID = "00001101-0000-1000-8000-00805F9B34FB";
     // 00000000-0000-1000-8000-00805f9b34fb
 
@@ -272,10 +272,11 @@ public class BTServices extends Service {
             int mByte;
             while (true) {
                 try {
+                    SystemClock.sleep(1000);
                     mByte= inS.read(buffer);
                     String readMessage = new String(buffer, 0, mByte);
                     // Send the obtained bytes to the UI Activity via handler
-                    mHandler.obtainMessage(BluetoothSetting.MESSAGE_READ, mByte, -1, readMessage).sendToTarget();
+                    mHandler.obtainMessage(ChartFrag.MESSAGE_READ, mByte, -1, readMessage).sendToTarget();
                 } catch (IOException e) {
                     e.printStackTrace();
                     break;

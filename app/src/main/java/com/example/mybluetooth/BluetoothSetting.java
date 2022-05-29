@@ -49,18 +49,15 @@ public class BluetoothSetting extends AppCompatActivity {
     private ListView mDevicesListView;
 
     // #defines for identifying shared types between calling functions
-    public final static int REQUEST_ENABLE_BT = 1; // used to identify adding bluetooth names
-    public final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
-    public final static int CONNECTING_STATUS = 3; // used in bluetooth handler to identify message status
+//    public final static int REQUEST_ENABLE_BT = 1; // used to identify adding bluetooth names
+//    public final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
+//    public final static int CONNECTING_STATUS = 3; // used in bluetooth handler to identify message status
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_setting);
-
-        Intent intent = new Intent(getApplicationContext(),BTServices.class);
-        startService(intent);
 
         mBluetoothStatus = (TextView)findViewById(R.id.bluetoothStatus);
         mScanBtn = (Button)findViewById(R.id.scan);

@@ -14,21 +14,34 @@ import com.github.mikephil.charting.charts.LineChart;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChartFrag extends Fragment {
     private View view;
 
     private LineChart lineChart;
     ArrayList<Entry> entry_chart = new ArrayList<>();
+
+    private Handler mHandler;
+    private List<Float> temp_values = new ArrayList<>();
+
+    public final static int REQUEST_ENABLE_BT = 1; // used to identify adding bluetooth names
+    public final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
+    public final static int CONNECTING_STATUS = 3; // used in bluetooth handler to identify message status
 
     @Nullable
     @Override
@@ -44,29 +57,38 @@ public class ChartFrag extends Fragment {
         lineChart.setPinchZoom(true);
         lineChart.setBackgroundColor(Color.LTGRAY);
 
-        LineData chartData = new LineData();
+        temp_values.add(0f);
 
-        Bundle bundle = getArguments();
-        String[] temparray = new String[20];
-        temparray = bundle.getStringArray("array");
-
-        if(temparray != null) {
-
-            for (int i = 0; i < temparray.length; i++) {
-
-                float val = Float.parseFloat(temparray[i]);
-                entry_chart.add(new Entry(i, val));
+        mHandler=new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                if(msg.what == MESSAGE_READ){
+                    String readMessage = null;
+                    try {
+                        readMessage = new String((byte[]) msg.obj, "UTF-8");
+                    }
+                    catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                        temp_values.add(Float.parseFloat(readMessage));
+                }
             }
-        }
-        else{
-            for (int i = 0; i < 10; i++) {
+        };
 
+        LineData chartData = new LineData();
+        if(temp_values.size() > 0){
+        for (int i = 0; i < temp_values.size(); i++) {
+            entry_chart.add(new Entry(i, temp_values.get(i)));
+        }
+        }
+         else{
+            for (int i = 0; i < 10; i++) {
                 float val = (float) (Math.random() * 10);
                 entry_chart.add(new Entry(i, val));
             }
         }
 
-        LineDataSet lineDataSet = new LineDataSet(entry_chart, "graph1");
+        LineDataSet lineDataSet = new LineDataSet(entry_chart, "temp");
         chartData.addDataSet(lineDataSet);
 
         // lineDataSet.setColor(Color.BLACK);

@@ -49,7 +49,7 @@ public class BTServices extends Service {
     public BTServices() {
     }
     private BluetoothAdapter mBluetoothAdapter;
-//    public static final String B_DEVICE = "green";
+    //    public static final String B_DEVICE = "green";
     public static final String B_UUID = "00001101-0000-1000-8000-00805F9B34FB";
     // 00000000-0000-1000-8000-00805f9b34fb
 
@@ -140,14 +140,14 @@ public class BTServices extends Service {
         stopSelf();
     }
 
-    public void sendData(String message){
-        if (mConnectedThread!= null){
-            mConnectedThread.write(message.getBytes());
-            toast("sent data");
-        }else {
-            Toast.makeText(BTServices.this,"Failed to send data",Toast.LENGTH_SHORT).show();
-        }
-    }
+//    public void sendData(String message){
+//        if (mConnectedThread!= null){
+//            mConnectedThread.write(message.getBytes());
+//            toast("sent data");
+//        }else {
+//            Toast.makeText(BTServices.this,"Failed to send data",Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     @Override
     public boolean stopService(Intent name) {
@@ -167,23 +167,22 @@ public class BTServices extends Service {
         return super.stopService(name);
     }
 
-    private synchronized void connected(BluetoothSocket mmSocket){
-
-        if (mConnectThread != null){
-            mConnectThread.cancel();
-            mConnectThread = null;
-        }
-        if (mConnectedThread != null){
-            mConnectedThread.cancel();
-            mConnectedThread = null;
-        }
-
-        mConnectedThread = new ConnectedBtThread(mmSocket);
-        mConnectedThread.start();
-
-
-        setState(STATE_CONNECTED);
-    }
+//    private synchronized void connected(BluetoothSocket mmSocket){
+//
+//        if (mConnectThread != null){
+//            mConnectThread.cancel();
+//            mConnectThread = null;
+//        }
+//        if (mConnectedThread != null){
+//            mConnectedThread.cancel();
+//            mConnectedThread = null;
+//        }
+//
+//        mConnectedThread = new ConnectedBtThread(mmSocket);
+//        mConnectedThread.start();
+//
+//        setState(STATE_CONNECTED);
+//    }
 
     private class ConnectBtThread extends Thread{
         private final BluetoothSocket mSocket;
@@ -270,13 +269,17 @@ public class BTServices extends Service {
         public void run() {
             buffer = new byte[1024];
             int mByte;
-            while (true) {
+            while (true){
                 try {
-                    //SystemClock.sleep(1000);
-                    mByte= inS.read(buffer);
-                    String readMessage = new String(buffer, 0, mByte);
-                    // Send the obtained bytes to the UI Activity via handler
-                    mHandler.obtainMessage(ChartFrag.MESSAGE_READ, mByte, -1, readMessage).sendToTarget();
+                    if (inS==null){
+                        mState = STATE_NONE;
+                        break;
+                    } else {
+                        mByte= inS.read(buffer);
+                        String readMessage = new String(buffer, 0, mByte);
+                        mHandler.obtainMessage(2, mByte, -1, readMessage).sendToTarget();
+                        Log.i("7", "thread id:\n" + "recieve");
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     break;
@@ -285,13 +288,13 @@ public class BTServices extends Service {
             Log.d("service","connected thread run method");
         }
 
-        public void write(byte[] buff){
-            try {
-                outS.write(buff);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        public void write(byte[] buff){
+//            try {
+//                outS.write(buff);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         private void cancel(){
             try {

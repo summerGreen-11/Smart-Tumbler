@@ -12,6 +12,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.charts.LineChart;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +36,7 @@ public class ChartFrag extends Fragment {
     private View view;
 
     private Handler mHandler;
+    private Activity myActivity;
 
     //Chart
     private LineChart lineChart;
@@ -53,13 +55,15 @@ public class ChartFrag extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.chartfrag,container,false);
 
+        myActivity = getActivity();
+
         bufferText = (TextView) view.findViewById(R.id.buffertext);
 
         temp_values.add(0f);
 
         mHandler = new Handler(){
             public void handleMessage(Message msg){
-                if(msg.what == MESSAGE_READ){
+                if(msg.what == 2){
                     String readMessage = null;
                     try {
                         readMessage = new String((byte[]) msg.obj, "UTF-8");
@@ -147,7 +151,7 @@ public class ChartFrag extends Fragment {
             @Override
             public void run() {
                 while (true) {
-                    getActivity().runOnUiThread(runnable);
+                    myActivity.runOnUiThread(runnable);
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ie) {

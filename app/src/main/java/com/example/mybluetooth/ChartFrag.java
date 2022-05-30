@@ -63,7 +63,7 @@ public class ChartFrag extends Fragment {
 
         mHandler = new Handler(){
             public void handleMessage(Message msg){
-                if(msg.what == 2){
+                if(msg.what == MESSAGE_READ){
                     String readMessage = null;
                     try {
                         readMessage = new String((byte[]) msg.obj, "UTF-8");
@@ -71,10 +71,10 @@ public class ChartFrag extends Fragment {
                     catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                    String[] array = readMessage.split(",");
-                    temp_values.add(Float.parseFloat(array[0]));
+                    //String[] array = readMessage.split(",");
+                    temp_values.add(Float.parseFloat(readMessage));
                     //float temp_values = Float.parseFloat(array[0]);
-                    bufferText.setText(array[0]);
+                    bufferText.setText(readMessage);
                 }
             }
         };

@@ -63,9 +63,9 @@ public class BTServices extends Service {
 
     private static Handler mHandler = null;
     public static int mState = STATE_NONE;
-    public static String deviceName;
-    public static BluetoothDevice sDevice = null;
-    public Vector<Byte> packData = new Vector<>(2048);
+//    public static String deviceName;
+//    public static BluetoothDevice sDevice = null;
+//    public Vector<Byte> packData = new Vector<>(2048);
 
     //IBinder mIBinder = new LocalBinder();
 
@@ -95,6 +95,7 @@ public class BTServices extends Service {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         connectToDevice(deviceg);
+        mHandler = new Handler();
 
         return START_STICKY;
     }
@@ -118,7 +119,8 @@ public class BTServices extends Service {
     }
 
     private void setState(int state){
-        mState = state;
+        BTServices.mState = state;
+        //mState = state;
         if (mHandler != null){
             // mHandler.obtainMessage();
         }
@@ -140,14 +142,14 @@ public class BTServices extends Service {
         stopSelf();
     }
 
-//    public void sendData(String message){
-//        if (mConnectedThread!= null){
-//            mConnectedThread.write(message.getBytes());
-//            toast("sent data");
-//        }else {
-//            Toast.makeText(BTServices.this,"Failed to send data",Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    public void sendData(String message){
+        if (mConnectedThread!= null){
+            mConnectedThread.write(message.getBytes());
+            toast("sent data");
+        }else {
+            Toast.makeText(BTServices.this,"Failed to send data",Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     public boolean stopService(Intent name) {
@@ -167,13 +169,15 @@ public class BTServices extends Service {
         return super.stopService(name);
     }
 
-//    private synchronized void connected(BluetoothSocket mmSocket){
-//
-//        if (mConnectThread != null){
+//    private synchronized void connected(BluetoothSocket mmSocket, BluetoothDevice mmDevice) {
+//        // Cancel the thread that completed the connection
+//        if (mConnectThread != null) {
 //            mConnectThread.cancel();
 //            mConnectThread = null;
 //        }
-//        if (mConnectedThread != null){
+//
+//        // Cancel any thread currently running a connection
+//        if (mConnectedThread != null) {
 //            mConnectedThread.cancel();
 //            mConnectedThread = null;
 //        }
@@ -182,6 +186,7 @@ public class BTServices extends Service {
 //        mConnectedThread.start();
 //
 //        setState(STATE_CONNECTED);
+//
 //    }
 
     private class ConnectBtThread extends Thread{
@@ -220,7 +225,7 @@ public class BTServices extends Service {
                 }
                 e.printStackTrace();
             }
-            //connected(mSocket);
+            //connected(mSocket,mDevice);
             mConnectedThread = new ConnectedBtThread(mSocket);
             mConnectedThread.start();
         }
@@ -275,10 +280,13 @@ public class BTServices extends Service {
                         mState = STATE_NONE;
                         break;
                     } else {
-                        mByte= inS.read(buffer);
+                        SystemClock.sleep(5000);
+                        mByte = inS.available(); // how many bytes are ready to be read?
+                        mByte = inS.read(buffer, 0, mByte);
+                        //mByte= inS.read(buffer);
                         String readMessage = new String(buffer, 0, mByte);
-                        mHandler.obtainMessage(2, mByte, -1, readMessage).sendToTarget();
-                        Log.i("7", "thread id:\n" + "recieve");
+                        mHandler.obtainMessage(BluetoothSetting.MESSAGE_READ, mByte, -1, readMessage).sendToTarget();
+                        Log.i("7", "thread id:" + readMessage);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -288,13 +296,13 @@ public class BTServices extends Service {
             Log.d("service","connected thread run method");
         }
 
-//        public void write(byte[] buff){
-//            try {
-//                outS.write(buff);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        public void write(byte[] buff){
+            try {
+                outS.write(buff);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         private void cancel(){
             try {

@@ -42,6 +42,9 @@ public class BluetoothSetting extends AppCompatActivity {
     // GUI Components
     private TextView mBluetoothStatus;
     private Button mScanBtn;
+    private TextView readBuffer;
+
+    private Handler mHandler;
 
     private BluetoothAdapter mBluetoothAdapter;
     private Set<BluetoothDevice> mPairedDevices;
@@ -61,6 +64,7 @@ public class BluetoothSetting extends AppCompatActivity {
 
         mBluetoothStatus = (TextView)findViewById(R.id.bluetoothStatus);
         mScanBtn = (Button)findViewById(R.id.scan);
+        readBuffer = (TextView)findViewById(R.id.readBuffer);
 
         mBTArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter(); // get a handle on the bluetooth radio
@@ -83,6 +87,24 @@ public class BluetoothSetting extends AppCompatActivity {
                 }
             });
         }
+
+        mHandler = new Handler(){
+            public void handleMessage(Message msg){
+                if(msg.what == MESSAGE_READ){
+                    String readMessage = null;
+                    try {
+                        readMessage = new String((byte[]) msg.obj, "UTF-8");
+                    }
+                    catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    //String[] array = readMessage.split(",");
+                    //temp_values.add(Float.parseFloat(array[0]));
+                    //float temp_values = Float.parseFloat(array[0]);
+                    readBuffer.setText(readMessage);
+                }
+            }
+        };
     }
 
     private void discover(View view){

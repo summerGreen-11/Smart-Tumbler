@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -88,23 +91,55 @@ public class BluetoothSetting extends AppCompatActivity {
             });
         }
 
-        mHandler = new Handler(){
-            public void handleMessage(Message msg){
-                if(msg.what == MESSAGE_READ){
-                    String readMessage = null;
-                    try {
-                        readMessage = new String((byte[]) msg.obj, "UTF-8");
-                    }
-                    catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    //String[] array = readMessage.split(",");
-                    //temp_values.add(Float.parseFloat(array[0]));
-                    //float temp_values = Float.parseFloat(array[0]);
-                    readBuffer.setText(readMessage);
-                }
-            }
-        };
+//        mHandler = new Handler(){
+//            public void handleMessage(Message msg){
+//                if(msg.what == MESSAGE_READ){
+//                    String readMessage = null;
+//                    try {
+//                        readMessage = new String((byte[]) msg.obj, "UTF-8");
+//                    }
+//                    catch (UnsupportedEncodingException e) {
+//                        e.printStackTrace();
+//                    }
+//                    //String[] array = readMessage.split(",");
+//                    //temp_values.add(Float.parseFloat(array[0]));
+//                    //float temp_values = Float.parseFloat(array[0]);
+//                    readBuffer.setText(readMessage);
+//                }
+//            }
+//        };
+
+//        Intent intent = getIntent();
+//        String message = intent.getStringExtra("readMessage");
+//        readBuffer.setText(message);
+//
+//        LocalBroadcastManager.getInstance(this).registerReceiver(
+//                mAlertReceiver, new IntentFilter("AlertServiceFilter")
+//        );
+
+    }
+
+    private BroadcastReceiver mMessageReceiver  = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            Log.d("receiver", "Got message: " + message);
+            readBuffer.setText(message);
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mMessageReceiver, new IntentFilter("custom-event-name"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+                mMessageReceiver);
     }
 
     private void discover(View view){

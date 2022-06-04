@@ -13,6 +13,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.charts.LineChart;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,23 +62,28 @@ public class ChartFrag extends Fragment {
 
         temp_values.add(0f);
 
-        mHandler = new Handler(){
-            public void handleMessage(Message msg){
-                if(msg.what == MESSAGE_READ){
-                    String readMessage = null;
-                    try {
-                        readMessage = new String((byte[]) msg.obj, "UTF-8");
-                    }
-                    catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    //String[] array = readMessage.split(",");
-                    temp_values.add(Float.parseFloat(readMessage));
-                    //float temp_values = Float.parseFloat(array[0]);
-                    bufferText.setText(readMessage);
-                }
-            }
-        };
+//        mHandler = new Handler(){
+//            public void handleMessage(Message msg){
+//                if(msg.what == MESSAGE_READ){
+//                    String readMessage = null;
+//                    try {
+//                        readMessage = new String((byte[]) msg.obj, "UTF-8");
+//                    }
+//                    catch (UnsupportedEncodingException e) {
+//                        e.printStackTrace();
+//                    }
+//                    //String[] array = readMessage.split(",");
+//                    temp_values.add(Float.parseFloat(readMessage));
+//                    //float temp_values = Float.parseFloat(array[0]);
+//                    bufferText.setText(readMessage);
+//                }
+//            }
+//        };
+
+//        Intent intent = getActivity().getIntent();
+//        String message = intent.getStringExtra("readMessage");
+//        temp_values.add(Float.parseFloat(message));
+//        bufferText.setText(message);
 
         lineChart = (LineChart) view.findViewById(R.id.linechart);//layout의 id
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);

@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -63,12 +65,6 @@ public class BTServices extends Service {
 
     private static Handler mHandler = null;
     public static int mState = STATE_NONE;
-//    public static String deviceName;
-//    public static BluetoothDevice sDevice = null;
-//    public Vector<Byte> packData = new Vector<>(2048);
-
-    //IBinder mIBinder = new LocalBinder();
-
 
     @Nullable
     @Override
@@ -83,7 +79,6 @@ public class BTServices extends Service {
 
     public class LocalBinder extends Binder {
         BTServices getService() {
-            // Return this instance of LocalService so clients can call public methods
             return BTServices.this;
         }
     }
@@ -285,8 +280,13 @@ public class BTServices extends Service {
                         mByte = inS.read(buffer, 0, mByte);
                         //mByte= inS.read(buffer);
                         String readMessage = new String(buffer, 0, mByte);
-                        mHandler.obtainMessage(BluetoothSetting.MESSAGE_READ, mByte, -1, readMessage).sendToTarget();
-                        Log.i("7", "thread id:" + readMessage);
+                        sendMessage(readMessage);
+//                        Intent intent = new Intent(getApplicationContext(),BluetoothSetting.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        intent.putExtra("readMessage",readMessage);
+//                        startActivity(intent);
+                        //mHandler.obtainMessage(BluetoothSetting.MESSAGE_READ, mByte, -1, readMessage).sendToTarget();
+                        Log.i("7", "message:" + readMessage);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -312,6 +312,13 @@ public class BTServices extends Service {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void sendMessage(String mess){
+        Log.d("messageService", "Broadcasting message");
+        Intent intent = new Intent("custom-event-name");
+        intent.putExtra("message", mess);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     @Override

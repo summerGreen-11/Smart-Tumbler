@@ -13,7 +13,10 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.charts.LineChart;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +31,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -100,6 +104,37 @@ public class ChartFrag extends Fragment {
         return view;
     }
 
+    private BroadcastReceiver mMessageReceiver  = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            /*Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                String string = bundle.getString("");
+                int resultCode = bundle.getInt("");
+
+            }*/
+            String message = intent.getStringExtra("message");
+            Log.d("receiver", "Got message: " + message);
+            bufferText.setText(message);
+            temp_values.add(Float.parseFloat(message));
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
+                mMessageReceiver, new IntentFilter("custom-event-name"));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (thread != null)
+            thread.interrupt();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+    }
+
     private void addEntry() {
         LineData data = lineChart.getData();
         if (data != null) {
@@ -167,12 +202,5 @@ public class ChartFrag extends Fragment {
             }
         });
         thread.start();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (thread != null)
-            thread.interrupt();
     }
 }

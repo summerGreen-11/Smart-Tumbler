@@ -131,15 +131,13 @@ public class BluetoothSetting extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter("custom-event-name"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-event-name"));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(
-                mMessageReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 
     private void discover(View view){

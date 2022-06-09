@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         setFrag = new SetFrag();
 
         setFrag(0); //show homeFrag
+
     }
 
     //replace fragments

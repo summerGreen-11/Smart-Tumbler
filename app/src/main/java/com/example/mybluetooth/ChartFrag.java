@@ -3,6 +3,7 @@ package com.example.mybluetooth;
 //MPAndroidChart import
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -66,35 +67,13 @@ public class ChartFrag extends Fragment {
 
         temp_values.add(0f);
 
-//        mHandler = new Handler(){
-//            public void handleMessage(Message msg){
-//                if(msg.what == MESSAGE_READ){
-//                    String readMessage = null;
-//                    try {
-//                        readMessage = new String((byte[]) msg.obj, "UTF-8");
-//                    }
-//                    catch (UnsupportedEncodingException e) {
-//                        e.printStackTrace();
-//                    }
-//                    //String[] array = readMessage.split(",");
-//                    temp_values.add(Float.parseFloat(readMessage));
-//                    //float temp_values = Float.parseFloat(array[0]);
-//                    bufferText.setText(readMessage);
-//                }
-//            }
-//        };
-
-//        Intent intent = getActivity().getIntent();
-//        String message = intent.getStringExtra("readMessage");
-//        temp_values.add(Float.parseFloat(message));
-//        bufferText.setText(message);
-
         lineChart = (LineChart) view.findViewById(R.id.linechart);//layout의 id
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
+        lineChart.getDescription().setEnabled(false);
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getLegend().setTextColor(Color.WHITE);
-        lineChart.animateXY(2000, 2000);
+        lineChart.animateXY(5000, 5000);
         lineChart.invalidate();
 
         LineData data = new LineData();
@@ -107,12 +86,6 @@ public class ChartFrag extends Fragment {
     private BroadcastReceiver mMessageReceiver  = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            /*Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                String string = bundle.getString("");
-                int resultCode = bundle.getInt("");
-
-            }*/
             String message = intent.getStringExtra("message");
             Log.d("receiver", "Got message: " + message);
             bufferText.setText(message);
@@ -148,28 +121,42 @@ public class ChartFrag extends Fragment {
             //data.addEntry(new Entry(set.getEntryCount(), (float) (Math.random() * 40) + 30f), 0);
             data.addEntry(new Entry(set.getEntryCount(),temp_values.get(temp_values.size()-1)), 0);
             data.notifyDataChanged();
+            XAxis xAxis = lineChart.getXAxis(); // x 축 설정
+            xAxis.setValueFormatter(new TimeAxisValueFormat());
 
             lineChart.notifyDataSetChanged();
-            lineChart.setVisibleXRangeMaximum(10);
+            lineChart.setVisibleXRangeMaximum(5);
             lineChart.moveViewToX(data.getEntryCount());
         }
     }
 
     private LineDataSet createSet() {
 
-        LineDataSet set = new LineDataSet(null, "Dynamic Data");
-        set.setFillAlpha(110);
-        set.setFillColor(Color.parseColor("#d7e7fa"));
-        set.setColor(Color.parseColor("#0B80C9"));
-        set.setCircleColor(Color.parseColor("#FFA1B4DC"));
+        LineDataSet set = new LineDataSet(null, "");
+        set.setFillAlpha(90);
+        set.setFillColor(Color.parseColor("#673AB7"));
+        set.setColor(Color.parseColor("#673AB7"));
+        set.setCircleColor(Color.parseColor("#673AB7"));
         set.setValueTextColor(Color.WHITE);
         set.setDrawValues(false);
-        set.setLineWidth(2);
-        set.setCircleRadius(6);
+        set.setLineWidth(2f);
+        set.setCircleRadius(3f);
         set.setDrawCircleHole(false);
-        set.setDrawCircles(false);
+        set.setDrawCircles(true);
         set.setValueTextSize(9f);
-        set.setDrawFilled(true);
+        set.setDrawFilled(false);
+        set.setForm(Legend.LegendForm.NONE);
+
+        XAxis x = lineChart.getXAxis();
+        //x.setTextColor(Color.WHITE);
+        x.setLabelCount(5);
+
+        YAxis y = lineChart.getAxisLeft();
+        //y.setTextColor(Color.WHITE);
+        y.setAxisMinimum(0f);
+
+        YAxis rightAxis = lineChart.getAxisRight();
+        rightAxis.setEnabled(false);
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setHighLightColor(Color.rgb(244, 117, 117));
@@ -194,7 +181,7 @@ public class ChartFrag extends Fragment {
                 while (true) {
                     myActivity.runOnUiThread(runnable);
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
                     } catch (InterruptedException ie) {
                         ie.printStackTrace();
                     }

@@ -18,6 +18,6 @@
         android:id="@+id/linechart"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="#373737" />
+        android:background="#E1E1E1" />
 
 </LinearLayout>

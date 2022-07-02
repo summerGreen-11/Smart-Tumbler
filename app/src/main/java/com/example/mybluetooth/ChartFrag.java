@@ -18,6 +18,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -56,12 +57,22 @@ public class ChartFrag extends Fragment {
     public final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
     public final static int CONNECTING_STATUS = 3; // used in bluetooth handler to identify message status
 
+    //DB 연동
+    private SensorDBHelper dbHelper;
+    private List<Integer> temp_datas = new ArrayList<>(); //온도 데이터
+    private List<Integer> weight_datas = new ArrayList<>(); //무게 데이터
+    private List<String> color_datas = new ArrayList<>(); //색상 데이터
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.chartfrag,container,false);
 
         myActivity = getActivity();
+
+        //DB 처리
+        dbHelper = new SensorDBHelper(myActivity.getApplicationContext());
+        getDBdata();
 
         bufferText = (TextView) view.findViewById(R.id.buffertext);
 
@@ -81,6 +92,24 @@ public class ChartFrag extends Fragment {
 
         feedMultiple();
         return view;
+    }
+
+    private void getDBdata() {
+        Cursor cursor = dbHelper.readRecord();
+
+        while (cursor.moveToNext()) {
+            int itemId = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry._ID));
+            int temp = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_TEMP));
+            int weight = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_WEIGHT));
+            String colordt = cursor.getString(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_COLOR));
+
+            //ArrayList에 값 저장
+            temp_datas.add(temp);
+            weight_datas.add(weight);
+            color_datas.add(colordt);
+        }
+
+        cursor.close();
     }
 
     private BroadcastReceiver mMessageReceiver  = new BroadcastReceiver() {
@@ -119,7 +148,8 @@ public class ChartFrag extends Fragment {
             }
 
             //data.addEntry(new Entry(set.getEntryCount(), (float) (Math.random() * 40) + 30f), 0);
-            data.addEntry(new Entry(set.getEntryCount(),temp_values.get(temp_values.size()-1)), 0);
+            //data.addEntry(new Entry(set.getEntryCount(),temp_values.get(temp_values.size()-1)), 0);
+            data.addEntry(new Entry(set.getEntryCount(),temp_datas.get(temp_datas.size()-1)), 0);
             data.notifyDataChanged();
             XAxis xAxis = lineChart.getXAxis(); // x 축 설정
             xAxis.setValueFormatter(new TimeAxisValueFormat());

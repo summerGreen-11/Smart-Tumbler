@@ -66,6 +66,9 @@ public class BTServices extends Service {
     private static Handler mHandler = null;
     public static int mState = STATE_NONE;
 
+    //DB 연동
+    private SensorDBHelper dbHelper;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -91,6 +94,8 @@ public class BTServices extends Service {
 
         connectToDevice(deviceg);
         mHandler = new Handler();
+
+        dbHelper = new SensorDBHelper(getApplicationContext());
 
         return START_STICKY;
     }
@@ -281,10 +286,12 @@ public class BTServices extends Service {
                         //mByte= inS.read(buffer);
                         String readMessage = new String(buffer, 0, mByte);
                         sendMessage(readMessage);
-//                        Intent intent = new Intent(getApplicationContext(),BluetoothSetting.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        intent.putExtra("readMessage",readMessage);
-//                        startActivity(intent);
+
+                        String[] array  = readMessage.split(",");
+                        int temp = Integer.parseInt(array[0]);
+                        int weight = Integer.parseInt((array[1]));
+                        String colordt = array[2];
+                        dbHelper.insertRecord(temp,weight,colordt);
                         //mHandler.obtainMessage(BluetoothSetting.MESSAGE_READ, mByte, -1, readMessage).sendToTarget();
                         Log.i("7", "message:" + readMessage);
                     }

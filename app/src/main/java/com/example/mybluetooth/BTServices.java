@@ -292,6 +292,7 @@ public class BTServices extends Service {
                             int temp = Integer.parseInt(array[0]);
                             int weight = Integer.parseInt((array[1]));
                             String colordt = array[2];
+                            Log.i("50", "data: " + temp + weight + colordt);
                             dbHelper.insertRecord(temp, weight, colordt);
                         } catch (NumberFormatException e) {
                         // NumberFormatException 이 발생한 경우 처리 방법

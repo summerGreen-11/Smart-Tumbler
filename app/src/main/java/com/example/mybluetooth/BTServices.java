@@ -287,11 +287,22 @@ public class BTServices extends Service {
                         String readMessage = new String(buffer, 0, mByte);
                         sendMessage(readMessage);
 
-                        String[] array  = readMessage.split(",");
-                        int temp = Integer.parseInt(array[0]);
-                        int weight = Integer.parseInt((array[1]));
-                        String colordt = array[2];
-                        dbHelper.insertRecord(temp,weight,colordt);
+                        try {
+                            String[] array = readMessage.split(",");
+                            int temp = Integer.parseInt(array[0]);
+                            int weight = Integer.parseInt((array[1]));
+                            String colordt = array[2];
+                            dbHelper.insertRecord(temp, weight, colordt);
+                        } catch (NumberFormatException e) {
+                        // NumberFormatException 이 발생한 경우 처리 방법
+                            String[] array = readMessage.split(",");
+                            int temp = 0;
+                            int weight = 0;
+                            String colordt = "water";
+                            dbHelper.insertRecord(temp, weight, colordt);
+                    } catch (Exception e) {
+                        // Exception 이 발생한 경우 처리 방법
+                    }
                         //mHandler.obtainMessage(BluetoothSetting.MESSAGE_READ, mByte, -1, readMessage).sendToTarget();
                         Log.i("7", "message:" + readMessage);
                     }

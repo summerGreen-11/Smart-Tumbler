@@ -103,6 +103,8 @@ public class ChartFrag extends Fragment {
             int weight = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_WEIGHT));
             String colordt = cursor.getString(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_COLOR));
 
+            String result = colordt;
+            bufferText.setText(result);
             //ArrayList에 값 저장
             temp_datas.add(temp);
             weight_datas.add(weight);
@@ -117,7 +119,7 @@ public class ChartFrag extends Fragment {
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
             Log.d("receiver", "Got message: " + message);
-            bufferText.setText(message);
+            //bufferText.setText(message);
             temp_values.add(Float.parseFloat(message));
         }
     };
@@ -148,8 +150,8 @@ public class ChartFrag extends Fragment {
             }
 
             //data.addEntry(new Entry(set.getEntryCount(), (float) (Math.random() * 40) + 30f), 0);
-            //data.addEntry(new Entry(set.getEntryCount(),temp_values.get(temp_values.size()-1)), 0);
-            data.addEntry(new Entry(set.getEntryCount(),temp_datas.get(temp_datas.size()-1)), 0);
+            data.addEntry(new Entry(set.getEntryCount(),temp_values.get(temp_values.size()-1)), 0);
+            //data.addEntry(new Entry(set.getEntryCount(),temp_datas.get(temp_datas.size()-1)), 0);
             data.notifyDataChanged();
             XAxis xAxis = lineChart.getXAxis(); // x 축 설정
             xAxis.setValueFormatter(new TimeAxisValueFormat());

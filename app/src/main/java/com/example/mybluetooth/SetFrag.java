@@ -16,21 +16,14 @@ import com.github.mikephil.charting.charts.LineChart;
 public class SetFrag extends Fragment {
     private View view;
 
-    private Button blueBtn;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.setfrag,container,false);
 
-        blueBtn = (Button) view.findViewById(R.id.blueBtn);
-        blueBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),BluetoothSetting.class);
-                startActivity(intent);
-            }
-        });
+        Intent intent = new Intent(getActivity(),BluetoothSetting.class); //fragment라서 activity intent와는 다른 방식
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
 
         return view;
     }

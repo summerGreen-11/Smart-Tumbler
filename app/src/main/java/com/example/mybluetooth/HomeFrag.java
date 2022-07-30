@@ -20,7 +20,6 @@ public class HomeFrag extends Fragment {
     private SensorDBHelper dbHelper;
     private TextView testPrint;
     private Button showDB;
-    SQLiteDatabase sqlDB;
 
     @Nullable
     @Override
@@ -30,6 +29,8 @@ public class HomeFrag extends Fragment {
         //테스트 데이터 출력
         testPrint = (TextView) view.findViewById(R.id.dataPrintTest);
         showDB = (Button) view.findViewById(R.id.showDB);
+
+        dbHelper = new SensorDBHelper(getActivity().getApplicationContext());
 
         showDB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,8 +57,9 @@ public class HomeFrag extends Fragment {
                 int weight = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_WEIGHT));
                 String colordt = cursor.getString(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_COLOR));
 
-                String result = Integer.toString(itemId) + ": "+Integer.toString(temp) + "도 \n"+
-                        Integer.toString(weight) + "g, 음료: "+colordt;
+                String result = " ID : " + Integer.toString(itemId) + "\n 온도: " +
+                        Integer.toString(temp) + "도, 무게: " +
+                        Integer.toString(weight) + "g, 음료: " + colordt;
                 testPrint.setText(result);
             }
                 cursor.close();

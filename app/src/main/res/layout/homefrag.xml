@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="20"
-            android:textSize="30dp"/>
+            android:textSize="25dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,18 +48,17 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal">
-
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:src="@drawable/bluecc" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="105dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginLeft="85dp"
+            android:layout_marginTop="40dp"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/waterPC"
@@ -75,32 +74,30 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
-        android:background="#FFFFFF"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
         <TextView
             android:id="@+id/dataPrintTest"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="30dp"
+            android:background="#FFFFFF"
             android:text="print sensor data"
+            android:paddingVertical="30dp"
             android:textSize="16dp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
         <Button
             android:id="@+id/showDB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="show database"/>
+            android:text="show database"
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

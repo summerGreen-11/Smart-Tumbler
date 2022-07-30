@@ -19,7 +19,6 @@ public class HomeFrag extends Fragment {
     //DB 연동
     private SensorDBHelper dbHelper;
     private TextView testPrint;
-    private Button showDB;
 
     @Nullable
     @Override
@@ -28,21 +27,15 @@ public class HomeFrag extends Fragment {
 
         //테스트 데이터 출력
         testPrint = (TextView) view.findViewById(R.id.dataPrintTest);
-        showDB = (Button) view.findViewById(R.id.showDB);
 
         dbHelper = new SensorDBHelper(getActivity().getApplicationContext());
 
-        showDB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    getDBdata();
-                }
-                catch(Exception e){
-                    testPrint.setText("DB NULL");
-                }
-            }
-        });
+        try {
+            getDBdata();
+        }
+        catch(Exception e){
+            testPrint.setText("DB NULL");
+        }
 
         return view;
     }
@@ -67,6 +60,5 @@ public class HomeFrag extends Fragment {
         catch (Exception e){
             testPrint.setText("DATA EMPTY");
         }
-
     }
 }

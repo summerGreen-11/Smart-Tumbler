@@ -45,7 +45,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="20dp"
-                            android:text="전화번호"
+                            android:text="알림 설정"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -85,7 +85,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="20dp"
-                            android:text="이름"
+                            android:text="옵션"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 

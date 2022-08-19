@@ -62,7 +62,7 @@
             android:id="@+id/water_homf_img"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/water0" />
+            android:src="@drawable/bluecc" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,32 +98,32 @@
             android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/fic0"/>
+            android:src="@drawable/fic20"/>
         <ImageView
             android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/fic0"/>
+            android:src="@drawable/fic40"/>
         <ImageView
             android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/fic0"/>
+            android:src="@drawable/fic60"/>
         <ImageView
             android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/fic0"/>
+            android:src="@drawable/fic80"/>
         <ImageView
             android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/fic0"/>
+            android:src="@drawable/fic100"/>
         <ImageView
             android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/fic0"/>
+            android:src="@drawable/fic100"/>
 
     </LinearLayout>
 
@@ -177,7 +177,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="35dp"
                 android:textAlignment="center"
-                android:text="섭취량 부족"/>
+                android:text="섭취량 유지"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -200,7 +200,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="35dp"
                 android:textAlignment="center"
-                android:text="섭취량 부족"/>
+                android:text="섭취량 초과"/>
         </RelativeLayout>
 
     </LinearLayout>

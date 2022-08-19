@@ -53,7 +53,7 @@
                             android:id="@+id/btn_sw1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="120dp"
+                            android:layout_marginLeft="190dp"
                             android:background="#FFFFFF"
                             android:lineSpacingExtra="6.4sp"
                             android:textColor="#2b2e32"
@@ -93,7 +93,7 @@
                             android:id="@+id/btn_sw2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="120dp"
+                            android:layout_marginLeft="190dp"
                             android:background="#FFFFFF"
                             android:lineSpacingExtra="6.4sp"
                             android:textColor="#2b2e32"
@@ -182,7 +182,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="15"
+                            android:text="30"
                             android:textStyle="bold"
                             android:textSize="15sp" />
                         <TextView
@@ -193,12 +193,13 @@
                             android:textStyle="bold"
                             android:textSize="15sp" />
                     </LinearLayout>
+
                     <ImageView
                         android:layout_width="310dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
                         android:layout_marginLeft="20dp"
-                        android:src="@drawable/load15"/>
+                        android:layout_marginTop="50dp"
+                        android:src="@drawable/load30" />
 
                 </RelativeLayout>
                 <RelativeLayout
@@ -223,7 +224,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="15"
+                            android:text="50"
                             android:textStyle="bold"
                             android:textSize="15sp" />
                         <TextView
@@ -234,12 +235,13 @@
                             android:textStyle="bold"
                             android:textSize="15sp" />
                     </LinearLayout>
+
                     <ImageView
                         android:layout_width="310dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
                         android:layout_marginLeft="20dp"
-                        android:src="@drawable/load15"/>
+                        android:layout_marginTop="50dp"
+                        android:src="@drawable/load50" />
 
                 </RelativeLayout>
                 <RelativeLayout
@@ -264,7 +266,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="15"
+                            android:text="75"
                             android:textStyle="bold"
                             android:textSize="15sp" />
                         <TextView
@@ -275,12 +277,13 @@
                             android:textStyle="bold"
                             android:textSize="15sp" />
                     </LinearLayout>
+
                     <ImageView
                         android:layout_width="310dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
                         android:layout_marginLeft="20dp"
-                        android:src="@drawable/load15"/>
+                        android:layout_marginTop="50dp"
+                        android:src="@drawable/load75" />
 
                 </RelativeLayout>
                 <RelativeLayout
@@ -306,7 +309,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="15"
+                            android:text="30"
                             android:textStyle="bold"
                             android:textSize="15sp" />
                         <TextView
@@ -317,12 +320,13 @@
                             android:textStyle="bold"
                             android:textSize="15sp" />
                     </LinearLayout>
+
                     <ImageView
                         android:layout_width="310dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
                         android:layout_marginLeft="20dp"
-                        android:src="@drawable/load15"/>
+                        android:layout_marginTop="50dp"
+                        android:src="@drawable/load30" />
 
                 </RelativeLayout>
             </LinearLayout>

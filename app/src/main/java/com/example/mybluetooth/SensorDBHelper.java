@@ -42,6 +42,7 @@ public class SensorDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String[] projection = {
                 BaseColumns._ID,
+                SensorContract.SensorEntry.DATE_TIME,
                 SensorContract.SensorEntry.COLUMN_TEMP,
                 SensorContract.SensorEntry.COLUMN_WEIGHT,
                 SensorContract.SensorEntry.COLUMN_COLOR

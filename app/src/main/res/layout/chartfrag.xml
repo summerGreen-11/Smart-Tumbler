@@ -96,6 +96,29 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="20dp"
                     android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <Button
+                            android:id="@+id/btn_chart_day"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="day"/>
+                        <Button
+                            android:id="@+id/btn_chart_week"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="week"/>
+                        <Button
+                            android:id="@+id/btn_chart_month"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="month"/>
+                    </LinearLayout>
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/linechart"
                         android:layout_width="match_parent"

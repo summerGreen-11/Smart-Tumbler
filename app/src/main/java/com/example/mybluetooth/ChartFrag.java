@@ -116,7 +116,7 @@ public class ChartFrag extends Fragment {
                 String dt = Integer.toString(cursor.getInt(2));
                 bufferText.setText(dt);
 
-                data.addEntry(new Entry(set.getEntryCount(),Float.parseFloat(dt)), CheckNumberData);
+                data.addEntry(new Entry(set.getEntryCount(),Float.parseFloat(dt)), 0);
                 CheckNumberData++;
             }
             cursor.close();

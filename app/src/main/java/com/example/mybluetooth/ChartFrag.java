@@ -9,6 +9,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -48,10 +49,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 public class ChartFrag extends Fragment {
     private View view;
 
-    //Chart
-    private LineChart lineChart;
-    private Thread thread;
-
+    //MPAndroidChart
+    private LineDataSet setComp1;
     //DB 연동
     private SensorDBHelper dbHelper;
 
@@ -61,6 +60,10 @@ public class ChartFrag extends Fragment {
     private Button WeekBtn;
     private Button MonthBtn;
 
+    //그래프를 그리기 위한 리스트
+    List<Entry> entries1 = new ArrayList<>();
+    List<Entry> entries2 = new ArrayList<>();
+    ArrayList<String> xVals = new ArrayList<String>(); // X 축 이름 값
 
 
     @Nullable
@@ -73,128 +76,129 @@ public class ChartFrag extends Fragment {
         //DB 처리
         dbHelper = new SensorDBHelper(getActivity().getApplicationContext());
 
-        lineChart = (LineChart) view.findViewById(R.id.linechart);//layout의 id
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        //차트
+        LineChart chart = (LineChart) view.findViewById(R.id.linechart);
 
-        lineChart.getDescription().setEnabled(false);
-        lineChart.getAxisRight().setEnabled(false);
-        lineChart.getLegend().setTextColor(Color.WHITE);
-        lineChart.animateXY(5000, 5000);
-        lineChart.invalidate();
-
-        LineData data = new LineData();
-        lineChart.setData(data);
-
-        feedMultiple();
-
-        return view;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (thread != null)
-            thread.interrupt();
-    }
-
-    private void addEntry() {
-        LineData data = lineChart.getData();
-        if (data != null) {
-            ILineDataSet set = data.getDataSetByIndex(0);
-
-            if (set == null) {
-                set = createSet();
-                data.addDataSet(set);
-            }
-
-            SQLiteDatabase sql = dbHelper.getReadableDatabase();
-            Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now'))", null);
-            int CheckNumberData = 0;
-
-            while (cursor.moveToNext()) {
-                String id =Integer.toString(cursor.getInt(0));
-                String dt = Integer.toString(cursor.getInt(2));
-                //bufferText.setText(dt);
-
-                data.addEntry(new Entry(set.getEntryCount(),Float.parseFloat(dt)), 0);
-                CheckNumberData++;
-            }
-            cursor.close();
-            sql.close();
-
-            //data.addEntry(new Entry(set.getEntryCount(), (float) (Math.random() * 40) + 30f), 0);
-            //data.addEntry(new Entry(set.getEntryCount(),temp_values.get(temp_values.size()-1)), 0);
-            //data.addEntry(new Entry(set.getEntryCount(),temp_datas.get(temp_datas.size()-1)), 0);
-
-            data.notifyDataChanged();
-//            XAxis xAxis = lineChart.getXAxis(); // x 축 설정
-//            xAxis.setValueFormatter(new TimeAxisValueFormat());
-
-            lineChart.notifyDataSetChanged();
-            lineChart.setVisibleXRangeMaximum(5);
-            lineChart.moveViewToX(data.getEntryCount());
-        }
-    }
-
-    private LineDataSet createSet() {
-
-        LineDataSet set = new LineDataSet(null, "");
-        set.setFillAlpha(90);
-        set.setFillColor(Color.parseColor("#673AB7"));
-        set.setColor(Color.parseColor("#673AB7"));
-        set.setCircleColor(Color.parseColor("#673AB7"));
-        set.setValueTextColor(Color.WHITE);
-        set.setDrawValues(false);
-        set.setLineWidth(2f);
-        set.setCircleRadius(3f);
-        set.setDrawCircleHole(false);
-        set.setDrawCircles(true);
-        set.setValueTextSize(9f);
-        set.setDrawFilled(false);
-        set.setForm(Legend.LegendForm.NONE);
-
-        XAxis x = lineChart.getXAxis();
-        //x.setTextColor(Color.WHITE);
-        x.setLabelCount(5);
-
-        YAxis y = lineChart.getAxisLeft();
-        //y.setTextColor(Color.WHITE);
-        y.setAxisMinimum(0f);
-
-        YAxis rightAxis = lineChart.getAxisRight();
-        rightAxis.setEnabled(false);
-
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setHighLightColor(Color.rgb(244, 117, 117));
-
-        return set;
-    }
-
-    private void feedMultiple() {
-        if (thread != null)
-            thread.interrupt();
-
-        final Runnable runnable = new Runnable() {
+        //일별 차트 버튼
+        DayBtn = (Button) view.findViewById(R.id.btn_chart_day);
+        DayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                addEntry();
-            }
-        };
+            public void onClick(View view) {
+                SQLiteDatabase sql = dbHelper.getReadableDatabase();
+                //Cursor cursor = sql.rawQuery("SELECT strftime(\"%d\", dateTime) AS date FROM SensorData GROUP BY date", null);
+                //Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now'))", null);
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = \"2022/08/29\"", null);
+                int CheckNumberData = 0;
 
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    getActivity().runOnUiThread(runnable);
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException ie) {
-                        ie.printStackTrace();
-                    }
+                while (cursor.moveToNext()) {
+                    String id =Integer.toString(cursor.getInt(0));
+                    String dt = Integer.toString(cursor.getInt(2));
+                    String wht = Integer.toString(cursor.getInt(3));
+                    String str = cursor.getString(1);
+                    String date = str.substring(11,16);
+                    Log.i("100", "data: " + str);
+//                    bufferText.setText(dt);
+
+                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(dt)));
+                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(wht)));
+                    xVals.add(date);
+                    CheckNumberData++;
                 }
+                cursor.close();
+                sql.close();
+
+//                {
+//                    for (int i = 1; i <= 10; i++) {
+//                        entries1.add(new Entry(i, i));
+//                    }
+//
+//                    for (int i = 10; i >= 1; i--) {
+//                        entries2.add(new Entry(11 - i, i));
+//                    }
+//                    xVals.add("12:10");
+//                    xVals.add("12:11");
+//                    xVals.add("12:12");
+//                    xVals.add("12:13");
+//                    xVals.add("12:14");
+//                    xVals.add("12:15");
+//                    xVals.add("12:16");
+//                    xVals.add("12:17");
+//                    xVals.add("12:18");
+//                    xVals.add("12:19");
+//                }
+
+                LineDataSet lineDataSet = new LineDataSet(entries1, "temp");
+                lineDataSet.setLineWidth(1);
+                lineDataSet.setCircleRadius(1);
+                lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
+                lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
+                lineDataSet.setDrawCircleHole(true);
+                lineDataSet.setDrawCircles(true);
+                lineDataSet.setDrawHorizontalHighlightIndicator(false);
+                lineDataSet.setDrawHighlightIndicators(false);
+                lineDataSet.setDrawValues(true);
+
+                LineDataSet lineDataSet2 = new LineDataSet(entries2, "weight");
+                lineDataSet2.setLineWidth(1);
+                lineDataSet2.setCircleRadius(1);
+                lineDataSet2.setCircleColor(Color.parseColor("#000000"));
+                lineDataSet2.setColor(Color.parseColor("#000000"));
+                lineDataSet2.setDrawCircleHole(true);
+                lineDataSet2.setDrawCircles(true);
+                lineDataSet2.setDrawHorizontalHighlightIndicator(false);
+                lineDataSet2.setDrawHighlightIndicators(false);
+                lineDataSet2.setDrawValues(false);
+
+                LineData lineData = new LineData(lineDataSet, lineDataSet2);
+                chart.setData(lineData);
+
+                XAxis xAxis = chart.getXAxis();
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setTextColor(Color.BLACK);
+                xAxis.enableGridDashedLine(8, 24, 0);
+                //추가
+                xAxis.setValueFormatter(new IndexAxisValueFormatter(xVals));
+                //xAxis.setLabelCount(10, true);
+
+                YAxis yLAxis = chart.getAxisLeft();
+                yLAxis.setTextColor(Color.BLACK);
+
+                YAxis yRAxis = chart.getAxisRight();
+                yRAxis.setDrawLabels(false);
+                yRAxis.setDrawAxisLine(false);
+                yRAxis.setDrawGridLines(false);
+
+                Description description = new Description();
+                description.setText("");
+
+                chart.setDoubleTapToZoomEnabled(false);
+                chart.setDrawGridBackground(false);
+                chart.setDescription(description);
+                chart.invalidate();
             }
         });
-        thread.start();
+
+        //주간 차트 버튼
+        WeekBtn = (Button) view.findViewById(R.id.btn_chart_week);
+        WeekBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
+        //월간 차트 버튼
+        MonthBtn = (Button) view.findViewById(R.id.btn_chart_month);
+        MonthBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
+        return view;
     }
 
 }

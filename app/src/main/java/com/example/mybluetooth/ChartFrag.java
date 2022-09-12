@@ -128,8 +128,8 @@ public class ChartFrag extends Fragment {
 //                }
 
                 LineDataSet lineDataSet = new LineDataSet(entries1, "temp");
-                lineDataSet.setLineWidth(1);
-                lineDataSet.setCircleRadius(1);
+                lineDataSet.setLineWidth(3);
+                lineDataSet.setCircleRadius(4);
                 lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
                 lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
                 lineDataSet.setDrawCircleHole(true);
@@ -137,10 +137,11 @@ public class ChartFrag extends Fragment {
                 lineDataSet.setDrawHorizontalHighlightIndicator(false);
                 lineDataSet.setDrawHighlightIndicators(false);
                 lineDataSet.setDrawValues(true);
+                lineDataSet.setValueTextSize(8f);
 
                 LineDataSet lineDataSet2 = new LineDataSet(entries2, "weight");
-                lineDataSet2.setLineWidth(1);
-                lineDataSet2.setCircleRadius(1);
+                lineDataSet2.setLineWidth(3);
+                lineDataSet2.setCircleRadius(4);
                 lineDataSet2.setCircleColor(Color.parseColor("#000000"));
                 lineDataSet2.setColor(Color.parseColor("#000000"));
                 lineDataSet2.setDrawCircleHole(true);
@@ -171,6 +172,9 @@ public class ChartFrag extends Fragment {
                 Description description = new Description();
                 description.setText("");
 
+                chart.setVisibleXRangeMaximum(6);
+                chart.setDragEnabled(true);
+                chart.setScaleEnabled(false);
                 chart.setDoubleTapToZoomEnabled(false);
                 chart.setDrawGridBackground(false);
                 chart.setDescription(description);

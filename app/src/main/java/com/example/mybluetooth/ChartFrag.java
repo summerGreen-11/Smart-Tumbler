@@ -71,8 +71,6 @@ public class ChartFrag extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.chartfrag,container,false);
 
-        bufferText = (TextView) view.findViewById(R.id.buffertext);
-
         //DB 처리
         dbHelper = new SensorDBHelper(getActivity().getApplicationContext());
 
@@ -84,6 +82,10 @@ public class ChartFrag extends Fragment {
         DayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //배열 초기화
+                entries1.clear();
+                entries2.clear();
+
                 SQLiteDatabase sql = dbHelper.getReadableDatabase();
                 //Cursor cursor = sql.rawQuery("SELECT strftime(\"%d\", dateTime) AS date FROM SensorData GROUP BY date", null);
                 //Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now'))", null);
@@ -92,12 +94,11 @@ public class ChartFrag extends Fragment {
 
                 while (cursor.moveToNext()) {
                     String id =Integer.toString(cursor.getInt(0));
+                    String str = cursor.getString(1);
                     String dt = Integer.toString(cursor.getInt(2));
                     String wht = Integer.toString(cursor.getInt(3));
-                    String str = cursor.getString(1);
                     String date = str.substring(11,16);
                     Log.i("100", "data: " + str);
-//                    bufferText.setText(dt);
 
                     entries1.add(new Entry(CheckNumberData, Float.parseFloat(dt)));
                     entries2.add(new Entry(CheckNumberData, Float.parseFloat(wht)));
@@ -107,26 +108,7 @@ public class ChartFrag extends Fragment {
                 cursor.close();
                 sql.close();
 
-//                {
-//                    for (int i = 1; i <= 10; i++) {
-//                        entries1.add(new Entry(i, i));
-//                    }
-//
-//                    for (int i = 10; i >= 1; i--) {
-//                        entries2.add(new Entry(11 - i, i));
-//                    }
-//                    xVals.add("12:10");
-//                    xVals.add("12:11");
-//                    xVals.add("12:12");
-//                    xVals.add("12:13");
-//                    xVals.add("12:14");
-//                    xVals.add("12:15");
-//                    xVals.add("12:16");
-//                    xVals.add("12:17");
-//                    xVals.add("12:18");
-//                    xVals.add("12:19");
-//                }
-
+                //온도 데이터
                 LineDataSet lineDataSet = new LineDataSet(entries1, "temp");
                 lineDataSet.setLineWidth(3);
                 lineDataSet.setCircleRadius(4);
@@ -139,6 +121,7 @@ public class ChartFrag extends Fragment {
                 lineDataSet.setDrawValues(true);
                 lineDataSet.setValueTextSize(8f);
 
+                //무게 데이터
                 LineDataSet lineDataSet2 = new LineDataSet(entries2, "weight");
                 lineDataSet2.setLineWidth(3);
                 lineDataSet2.setCircleRadius(4);
@@ -150,6 +133,7 @@ public class ChartFrag extends Fragment {
                 lineDataSet2.setDrawHighlightIndicators(false);
                 lineDataSet2.setDrawValues(false);
 
+                //데이터셋에 데이터 추가
                 LineData lineData = new LineData(lineDataSet, lineDataSet2);
                 chart.setData(lineData);
 
@@ -187,7 +171,85 @@ public class ChartFrag extends Fragment {
         WeekBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //배열 초기화
+                entries1.clear();
+                entries2.clear();
 
+                SQLiteDatabase sql = dbHelper.getReadableDatabase();
+                Cursor cursor = sql.rawQuery("SELECT strftime(\"%Y/%w\",dateTime)as date_time, tempDT, weightDT, colorDT  " +
+                        "FROM SensorData where time BETWEEN datetime(\"now\", \"-90days\") AND datetime(\"now\", \"localtime\") GROUP BY date_time", null);
+                int CheckNumberData = 0;
+
+                while (cursor.moveToNext()) {
+                    String id =Integer.toString(cursor.getInt(0));
+                    String str = cursor.getString(1);
+                    String dt = Integer.toString(cursor.getInt(2));
+                    String wht = Integer.toString(cursor.getInt(3));
+                    String date = str.substring(11,16);
+
+                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(dt)));
+                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(wht)));
+                    xVals.add(date);
+                    CheckNumberData++;
+                }
+                cursor.close();
+                sql.close();
+
+                //온도 데이터
+                LineDataSet lineDataSet = new LineDataSet(entries1, "temp");
+                lineDataSet.setLineWidth(3);
+                lineDataSet.setCircleRadius(4);
+                lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
+                lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
+                lineDataSet.setDrawCircleHole(true);
+                lineDataSet.setDrawCircles(true);
+                lineDataSet.setDrawHorizontalHighlightIndicator(false);
+                lineDataSet.setDrawHighlightIndicators(false);
+                lineDataSet.setDrawValues(true);
+                lineDataSet.setValueTextSize(8f);
+
+                //무게 데이터
+                LineDataSet lineDataSet2 = new LineDataSet(entries2, "weight");
+                lineDataSet2.setLineWidth(3);
+                lineDataSet2.setCircleRadius(4);
+                lineDataSet2.setCircleColor(Color.parseColor("#000000"));
+                lineDataSet2.setColor(Color.parseColor("#000000"));
+                lineDataSet2.setDrawCircleHole(true);
+                lineDataSet2.setDrawCircles(true);
+                lineDataSet2.setDrawHorizontalHighlightIndicator(false);
+                lineDataSet2.setDrawHighlightIndicators(false);
+                lineDataSet2.setDrawValues(false);
+
+                //데이터셋에 데이터 추가
+                LineData lineData = new LineData(lineDataSet, lineDataSet2);
+                chart.setData(lineData);
+
+                XAxis xAxis = chart.getXAxis();
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setTextColor(Color.BLACK);
+                xAxis.enableGridDashedLine(8, 24, 0);
+                //추가
+                xAxis.setValueFormatter(new IndexAxisValueFormatter(xVals));
+                //xAxis.setLabelCount(10, true);
+
+                YAxis yLAxis = chart.getAxisLeft();
+                yLAxis.setTextColor(Color.BLACK);
+
+                YAxis yRAxis = chart.getAxisRight();
+                yRAxis.setDrawLabels(false);
+                yRAxis.setDrawAxisLine(false);
+                yRAxis.setDrawGridLines(false);
+
+                Description description = new Description();
+                description.setText("");
+
+                chart.setVisibleXRangeMaximum(6);
+                chart.setDragEnabled(true);
+                chart.setScaleEnabled(false);
+                chart.setDoubleTapToZoomEnabled(false);
+                chart.setDrawGridBackground(false);
+                chart.setDescription(description);
+                chart.invalidate();
             }
         });
 
@@ -197,7 +259,84 @@ public class ChartFrag extends Fragment {
         MonthBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //배열 초기화
+                entries1.clear();
+                entries2.clear();
 
+                SQLiteDatabase sql = dbHelper.getReadableDatabase();
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m\", dateTime) = \"2022/08\"", null);
+                int CheckNumberData = 0;
+
+                while (cursor.moveToNext()) {
+                    String id =Integer.toString(cursor.getInt(0));
+                    String str = cursor.getString(1);
+                    String dt = Integer.toString(cursor.getInt(2));
+                    String wht = Integer.toString(cursor.getInt(3));
+                    String date = str.substring(11,16);
+
+                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(dt)));
+                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(wht)));
+                    xVals.add(date);
+                    CheckNumberData++;
+                }
+                cursor.close();
+                sql.close();
+
+                //온도 데이터
+                LineDataSet lineDataSet = new LineDataSet(entries1, "temp");
+                lineDataSet.setLineWidth(3);
+                lineDataSet.setCircleRadius(4);
+                lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
+                lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
+                lineDataSet.setDrawCircleHole(true);
+                lineDataSet.setDrawCircles(true);
+                lineDataSet.setDrawHorizontalHighlightIndicator(false);
+                lineDataSet.setDrawHighlightIndicators(false);
+                lineDataSet.setDrawValues(true);
+                lineDataSet.setValueTextSize(8f);
+
+                //무게 데이터
+                LineDataSet lineDataSet2 = new LineDataSet(entries2, "weight");
+                lineDataSet2.setLineWidth(3);
+                lineDataSet2.setCircleRadius(4);
+                lineDataSet2.setCircleColor(Color.parseColor("#000000"));
+                lineDataSet2.setColor(Color.parseColor("#000000"));
+                lineDataSet2.setDrawCircleHole(true);
+                lineDataSet2.setDrawCircles(true);
+                lineDataSet2.setDrawHorizontalHighlightIndicator(false);
+                lineDataSet2.setDrawHighlightIndicators(false);
+                lineDataSet2.setDrawValues(false);
+
+                //데이터셋에 데이터 추가
+                LineData lineData = new LineData(lineDataSet, lineDataSet2);
+                chart.setData(lineData);
+
+                XAxis xAxis = chart.getXAxis();
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setTextColor(Color.BLACK);
+                xAxis.enableGridDashedLine(8, 24, 0);
+                //추가
+                xAxis.setValueFormatter(new IndexAxisValueFormatter(xVals));
+                //xAxis.setLabelCount(10, true);
+
+                YAxis yLAxis = chart.getAxisLeft();
+                yLAxis.setTextColor(Color.BLACK);
+
+                YAxis yRAxis = chart.getAxisRight();
+                yRAxis.setDrawLabels(false);
+                yRAxis.setDrawAxisLine(false);
+                yRAxis.setDrawGridLines(false);
+
+                Description description = new Description();
+                description.setText("");
+
+                chart.setVisibleXRangeMaximum(6);
+                chart.setDragEnabled(true);
+                chart.setScaleEnabled(false);
+                chart.setDoubleTapToZoomEnabled(false);
+                chart.setDrawGridBackground(false);
+                chart.setDescription(description);
+                chart.invalidate();
             }
         });
 

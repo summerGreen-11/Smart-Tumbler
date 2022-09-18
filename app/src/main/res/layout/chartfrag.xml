@@ -98,25 +98,30 @@
                     android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:orientation="horizontal">
                         <Button
                             android:id="@+id/btn_chart_day"
+                            android:layout_marginRight="2dp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="@drawable/chart_select_btn"
                             android:text="day"/>
                         <Button
                             android:id="@+id/btn_chart_week"
                             android:layout_width="0dp"
+                            android:layout_marginRight="2dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="@drawable/chart_select_btn"
                             android:text="week"/>
                         <Button
                             android:id="@+id/btn_chart_month"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="@drawable/chart_select_btn"
                             android:text="month"/>
                     </LinearLayout>
                     <com.github.mikephil.charting.charts.LineChart
@@ -125,11 +130,37 @@
                         android:layout_height="300dp"
                         android:background="#FFFFFF" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginHorizontal="20dp">
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="water"/>
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="coffee"/>
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="latte"/>
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="milk"/>
+                </LinearLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="200dp"/>
-
+                    android:layout_marginBottom="300dp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

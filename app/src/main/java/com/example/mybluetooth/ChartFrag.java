@@ -87,8 +87,6 @@ public class ChartFrag extends Fragment {
                 entries2.clear();
 
                 SQLiteDatabase sql = dbHelper.getReadableDatabase();
-                //Cursor cursor = sql.rawQuery("SELECT strftime(\"%d\", dateTime) AS date FROM SensorData GROUP BY date", null);
-                //Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now'))", null);
                 Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = \"2022/08/29\"", null);
                 int CheckNumberData = 0;
 

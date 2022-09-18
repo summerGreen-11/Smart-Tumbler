@@ -13,6 +13,7 @@ public final class SensorContract {
         public static final String COLUMN_WEIGHT = "weightDT";
         public static final String COLUMN_COLOR = "colorDT";
         public static final String DATE_TIME = "dateTime";
+        public static final String BTN_STATE = "btnState";
 
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
@@ -20,6 +21,7 @@ public final class SensorContract {
                         DATE_TIME + " TEXT DEFAULT (datetime('now','localtime')),"+
                         COLUMN_TEMP + " INTEGER," +
                         COLUMN_WEIGHT + " INTEGER," +
+                        BTN_STATE + " INTEGER," +
                         COLUMN_COLOR + " TEXT)";
         public static final String SQL_DELETE_TABLE =
                 "DROP TABLE IF EXISTS " + TABLE_NAME;

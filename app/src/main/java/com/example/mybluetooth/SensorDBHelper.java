@@ -27,14 +27,14 @@ public class SensorDBHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    void insertRecord(int temp, int weight, String colordt) {
+    void insertRecord(int temp, int weight, String colordt, int btnstate) {
         SQLiteDatabase db = getReadableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(SensorContract.SensorEntry.COLUMN_TEMP, temp);
         values.put(SensorContract.SensorEntry.COLUMN_WEIGHT, weight);
         values.put(SensorContract.SensorEntry.COLUMN_COLOR, colordt);
-
+        values.put(SensorContract.SensorEntry.BTN_STATE, btnstate);
         db.insert(SensorContract.SensorEntry.TABLE_NAME, null, values);
     }
 
@@ -45,6 +45,7 @@ public class SensorDBHelper extends SQLiteOpenHelper {
                 SensorContract.SensorEntry.DATE_TIME,
                 SensorContract.SensorEntry.COLUMN_TEMP,
                 SensorContract.SensorEntry.COLUMN_WEIGHT,
+                SensorContract.SensorEntry.BTN_STATE,
                 SensorContract.SensorEntry.COLUMN_COLOR
         };
 

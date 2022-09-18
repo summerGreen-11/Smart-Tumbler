@@ -6,10 +6,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,6 +37,7 @@ import java.util.UUID;
 
 import static android.text.TextUtils.split;
 
+import com.github.mikephil.charting.data.Entry;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
@@ -121,7 +125,17 @@ public class MainActivity extends AppCompatActivity {
 
     //Calculate Intakes
     private void CalIntakes(){
-        
+        SQLiteDatabase sql = dbHelper.getReadableDatabase();
+        Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = \"2022/08/29\"", null);
+        int itk = 0;
+        while (cursor.moveToNext()) {
+
+            int wht = cursor.getInt(3);
+            itk = cursor.getInt(4);
+            Log.i("100", "data: " + Integer.toString(wht));
+        }
+        cursor.close();
+        sql.close();
     }
 }
 

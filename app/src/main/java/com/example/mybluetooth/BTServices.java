@@ -292,15 +292,17 @@ public class BTServices extends Service {
                             int temp = Integer.parseInt(array[0]);
                             int weight = Integer.parseInt((array[1]));
                             String colordt = array[2];
+                            int btnstate = Integer.parseInt(array[3]);
                             Log.i("51", "data: " + Integer.toString(temp) + Integer.toString(weight) + colordt);
-                            dbHelper.insertRecord(temp, weight, colordt);
+                            dbHelper.insertRecord(temp, weight, colordt,btnstate);
                         } catch (NumberFormatException e) {
                         // NumberFormatException 이 발생한 경우 처리 방법
                             String[] array = readMessage.split(",");
                             int temp = 0;
                             int weight = 0;
                             String colordt = "water";
-                            dbHelper.insertRecord(temp, weight, colordt);
+                            int btnstate = 0;
+                            dbHelper.insertRecord(temp, weight, colordt, btnstate);
                             Log.i("50", "data: " + Integer.toString(temp) + Integer.toString(weight) + colordt);
                     } catch (Exception e) {
                         // Exception 이 발생한 경우 처리 방법

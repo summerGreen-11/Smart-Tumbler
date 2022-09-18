@@ -48,10 +48,19 @@ public class MainActivity extends AppCompatActivity {
     private AlarmFrag alarmFrag;
     private SetFrag setFrag;
 
+    //DB 연동
+    private SensorDBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //DB 처리
+        dbHelper = new SensorDBHelper(this.getApplicationContext());
+
+        //DB 섭취량 계산
+        CalIntakes();
 
         bottomNavigationView = findViewById(R.id.bottomNavi);
 
@@ -110,7 +119,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    //Calculate Intakes
+    private void CalIntakes(){
+        
+    }
 }
 
 

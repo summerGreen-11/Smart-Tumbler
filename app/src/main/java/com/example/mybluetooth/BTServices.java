@@ -286,28 +286,22 @@ public class BTServices extends Service {
                         //mByte= inS.read(buffer);
                         String readMessage = new String(buffer, 0, mByte);
                         sendMessage(readMessage);
-
                         try {
                             String[] array = readMessage.split(",");
-                            int temp = Integer.parseInt(array[0]);
-                            int weight = Integer.parseInt((array[1]));
-                            String colordt = array[2];
-                            int btnstate = Integer.parseInt(array[3]);
-                            Log.i("51", "data: " + Integer.toString(temp) + Integer.toString(weight) + colordt);
-                            dbHelper.insertRecord(temp, weight, colordt,btnstate);
+                            String drinks = array[0];
+                            int temp = Integer.parseInt(array[1]);
+                            int intakes = Integer.parseInt((array[2]));
+                            dbHelper.insertRecord(drinks,temp,intakes);
                         } catch (NumberFormatException e) {
                         // NumberFormatException 이 발생한 경우 처리 방법
                             String[] array = readMessage.split(",");
+                            String drinks = "water";
                             int temp = 0;
-                            int weight = 0;
-                            String colordt = "water";
-                            int btnstate = 0;
-                            dbHelper.insertRecord(temp, weight, colordt, btnstate);
-                            Log.i("50", "data: " + Integer.toString(temp) + Integer.toString(weight) + colordt);
+                            int intakes = 0;
+                            dbHelper.insertRecord(drinks,temp,intakes);
                     } catch (Exception e) {
                         // Exception 이 발생한 경우 처리 방법
                     }
-                        //mHandler.obtainMessage(BluetoothSetting.MESSAGE_READ, mByte, -1, readMessage).sendToTarget();
                         Log.i("7", "message:" + readMessage);
                     }
                 } catch (IOException e) {

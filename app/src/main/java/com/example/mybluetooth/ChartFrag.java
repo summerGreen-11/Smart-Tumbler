@@ -48,9 +48,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 public class ChartFrag extends Fragment {
     private View view;
-
-    //MPAndroidChart
-    private LineDataSet setComp1;
+    
     //DB 연동
     private SensorDBHelper dbHelper;
 
@@ -95,14 +93,13 @@ public class ChartFrag extends Fragment {
 
                 while (cursor.moveToNext()) {
                     String id =Integer.toString(cursor.getInt(0));
-                    String str = cursor.getString(1);
-                    String dt = Integer.toString(cursor.getInt(2));
-                    String wht = Integer.toString(cursor.getInt(3));
-                    String date = str.substring(11,16);
-                    Log.i("100", "data: " + str);
+                    String date = cursor.getString(1).substring(11,16);
+                    String drinks = cursor.getString(2);
+                    String temp = Integer.toString(cursor.getInt(3));
+                    String intakes = Integer.toString(cursor.getInt(4));
 
-                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(dt)));
-                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(wht)));
+                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(temp)));
+                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(intakes)));
                     xVals.add(date);
                     CheckNumberData++;
                 }
@@ -122,8 +119,8 @@ public class ChartFrag extends Fragment {
                 lineDataSet.setDrawValues(true);
                 lineDataSet.setValueTextSize(8f);
 
-                //무게 데이터
-                LineDataSet lineDataSet2 = new LineDataSet(entries2, "weight");
+                //섭취량 데이터
+                LineDataSet lineDataSet2 = new LineDataSet(entries2, "intakes");
                 lineDataSet2.setLineWidth(3);
                 lineDataSet2.setCircleRadius(4);
                 lineDataSet2.setCircleColor(Color.parseColor("#000000"));
@@ -132,7 +129,8 @@ public class ChartFrag extends Fragment {
                 lineDataSet2.setDrawCircles(true);
                 lineDataSet2.setDrawHorizontalHighlightIndicator(false);
                 lineDataSet2.setDrawHighlightIndicators(false);
-                lineDataSet2.setDrawValues(false);
+                lineDataSet2.setDrawValues(true);
+                lineDataSet.setValueTextSize(8f);
 
                 //데이터셋에 데이터 추가
                 LineData lineData = new LineData(lineDataSet, lineDataSet2);
@@ -144,7 +142,6 @@ public class ChartFrag extends Fragment {
                 xAxis.enableGridDashedLine(8, 24, 0);
                 //추가
                 xAxis.setValueFormatter(new IndexAxisValueFormatter(xVals));
-                //xAxis.setLabelCount(10, true);
 
                 YAxis yLAxis = chart.getAxisLeft();
                 yLAxis.setTextColor(Color.BLACK);
@@ -183,13 +180,13 @@ public class ChartFrag extends Fragment {
 
                 while (cursor.moveToNext()) {
                     String id =Integer.toString(cursor.getInt(0));
-                    String str = cursor.getString(1);
-                    String dt = Integer.toString(cursor.getInt(2));
-                    String wht = Integer.toString(cursor.getInt(3));
-                    String date = str.substring(11,16);
+                    String date = cursor.getString(1).substring(11,16);
+                    String drinks = cursor.getString(2);
+                    String temp = Integer.toString(cursor.getInt(3));
+                    String intakes = Integer.toString(cursor.getInt(4));
 
-                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(dt)));
-                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(wht)));
+                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(temp)));
+                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(intakes)));
                     xVals.add(date);
                     CheckNumberData++;
                 }
@@ -209,8 +206,8 @@ public class ChartFrag extends Fragment {
                 lineDataSet.setDrawValues(true);
                 lineDataSet.setValueTextSize(8f);
 
-                //무게 데이터
-                LineDataSet lineDataSet2 = new LineDataSet(entries2, "weight");
+                //섭취량 데이터
+                LineDataSet lineDataSet2 = new LineDataSet(entries2, "intakes");
                 lineDataSet2.setLineWidth(3);
                 lineDataSet2.setCircleRadius(4);
                 lineDataSet2.setCircleColor(Color.parseColor("#000000"));
@@ -219,7 +216,8 @@ public class ChartFrag extends Fragment {
                 lineDataSet2.setDrawCircles(true);
                 lineDataSet2.setDrawHorizontalHighlightIndicator(false);
                 lineDataSet2.setDrawHighlightIndicators(false);
-                lineDataSet2.setDrawValues(false);
+                lineDataSet2.setDrawValues(true);
+                lineDataSet.setValueTextSize(8f);
 
                 //데이터셋에 데이터 추가
                 LineData lineData = new LineData(lineDataSet, lineDataSet2);
@@ -231,7 +229,6 @@ public class ChartFrag extends Fragment {
                 xAxis.enableGridDashedLine(8, 24, 0);
                 //추가
                 xAxis.setValueFormatter(new IndexAxisValueFormatter(xVals));
-                //xAxis.setLabelCount(10, true);
 
                 YAxis yLAxis = chart.getAxisLeft();
                 yLAxis.setTextColor(Color.BLACK);
@@ -270,13 +267,13 @@ public class ChartFrag extends Fragment {
 
                 while (cursor.moveToNext()) {
                     String id =Integer.toString(cursor.getInt(0));
-                    String str = cursor.getString(1);
-                    String dt = Integer.toString(cursor.getInt(2));
-                    String wht = Integer.toString(cursor.getInt(3));
-                    String date = str.substring(11,16);
+                    String date = cursor.getString(1).substring(11,16);
+                    String drinks = cursor.getString(2);
+                    String temp = Integer.toString(cursor.getInt(3));
+                    String intakes = Integer.toString(cursor.getInt(4));
 
-                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(dt)));
-                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(wht)));
+                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(temp)));
+                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(intakes)));
                     xVals.add(date);
                     CheckNumberData++;
                 }
@@ -296,8 +293,8 @@ public class ChartFrag extends Fragment {
                 lineDataSet.setDrawValues(true);
                 lineDataSet.setValueTextSize(8f);
 
-                //무게 데이터
-                LineDataSet lineDataSet2 = new LineDataSet(entries2, "weight");
+                //섭취량 데이터
+                LineDataSet lineDataSet2 = new LineDataSet(entries2, "intakes");
                 lineDataSet2.setLineWidth(3);
                 lineDataSet2.setCircleRadius(4);
                 lineDataSet2.setCircleColor(Color.parseColor("#000000"));
@@ -306,7 +303,8 @@ public class ChartFrag extends Fragment {
                 lineDataSet2.setDrawCircles(true);
                 lineDataSet2.setDrawHorizontalHighlightIndicator(false);
                 lineDataSet2.setDrawHighlightIndicators(false);
-                lineDataSet2.setDrawValues(false);
+                lineDataSet2.setDrawValues(true);
+                lineDataSet.setValueTextSize(8f);
 
                 //데이터셋에 데이터 추가
                 LineData lineData = new LineData(lineDataSet, lineDataSet2);

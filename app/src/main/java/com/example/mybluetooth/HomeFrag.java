@@ -47,12 +47,12 @@ public class HomeFrag extends Fragment {
             while (cursor.moveToNext()) {
                 int itemId = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry._ID));
                 int temp = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_TEMP));
-                int weight = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_WEIGHT));
-                String colordt = cursor.getString(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_COLOR));
+                int intakes = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_INTAKES));
+                String drinks = cursor.getString(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_DRINK));
 
                 String result = " ID : " + Integer.toString(itemId) + "\n 온도: " +
                         Integer.toString(temp) + "도, 무게: " +
-                        Integer.toString(weight) + "g, 음료: " + colordt;
+                        Integer.toString(intakes) + "g, 음료: " + drinks;
                 testPrint.setText(result);
 
                 //현재 온도 출력

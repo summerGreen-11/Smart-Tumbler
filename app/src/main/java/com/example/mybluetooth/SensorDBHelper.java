@@ -27,14 +27,12 @@ public class SensorDBHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    void insertRecord(int temp, int weight, String colordt, int btnstate) {
+    void insertRecord(String drinks,int temp, int intakes) {
         SQLiteDatabase db = getReadableDatabase();
-
         ContentValues values = new ContentValues();
+        values.put(SensorContract.SensorEntry.COLUMN_DRINK,drinks);
         values.put(SensorContract.SensorEntry.COLUMN_TEMP, temp);
-        values.put(SensorContract.SensorEntry.COLUMN_WEIGHT, weight);
-        values.put(SensorContract.SensorEntry.COLUMN_COLOR, colordt);
-        values.put(SensorContract.SensorEntry.BTN_STATE, btnstate);
+        values.put(SensorContract.SensorEntry.COLUMN_INTAKES,intakes);
         db.insert(SensorContract.SensorEntry.TABLE_NAME, null, values);
     }
 
@@ -43,10 +41,9 @@ public class SensorDBHelper extends SQLiteOpenHelper {
         String[] projection = {
                 BaseColumns._ID,
                 SensorContract.SensorEntry.DATE_TIME,
+                SensorContract.SensorEntry.COLUMN_DRINK,
                 SensorContract.SensorEntry.COLUMN_TEMP,
-                SensorContract.SensorEntry.COLUMN_WEIGHT,
-                SensorContract.SensorEntry.BTN_STATE,
-                SensorContract.SensorEntry.COLUMN_COLOR
+                SensorContract.SensorEntry.COLUMN_INTAKES
         };
 
         String sortOrder = BaseColumns._ID;

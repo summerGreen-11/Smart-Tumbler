@@ -55,10 +55,13 @@ public class ChartFrag extends Fragment {
     private SensorDBHelper dbHelper;
 
     //UI
-    private TextView bufferText;
     private Button DayBtn;
     private Button WeekBtn;
     private Button MonthBtn;
+    private Button WaBtn;
+    private Button CoBtn;
+    private Button LaBtn;
+    private Button MiBtn;
 
     //그래프를 그리기 위한 리스트
     List<Entry> entries1 = new ArrayList<>();
@@ -337,7 +340,6 @@ public class ChartFrag extends Fragment {
                 chart.invalidate();
             }
         });
-
 
         return view;
     }

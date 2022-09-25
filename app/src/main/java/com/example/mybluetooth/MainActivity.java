@@ -126,7 +126,8 @@ public class MainActivity extends AppCompatActivity {
     //Calculate Intakes
     private void CalIntakes(){
         SQLiteDatabase sql = dbHelper.getReadableDatabase();
-        Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = \"2022/08/29\"", null);
+        Cursor cursor = sql.rawQuery("SELECT * FROM SensorData " +
+                "WHERE strftime(\"%Y/%m/%d\", dateTime) = \"2022/08/29\"", null);
         int itk = 0;
         while (cursor.moveToNext()) {
 

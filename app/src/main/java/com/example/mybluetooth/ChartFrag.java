@@ -183,7 +183,30 @@ public class ChartFrag extends Fragment {
         WaBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //배열 초기화
+                entries1.clear();
+                entries2.clear();
 
+                SQLiteDatabase sql = dbHelper.getReadableDatabase();
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", now) AND drinkDT == \"water\"", null);
+                int CheckNumberData = 0;
+
+                while (cursor.moveToNext()) {
+                    String id =Integer.toString(cursor.getInt(0));
+                    String date = cursor.getString(1).substring(11,16);
+                    String drinks = cursor.getString(2);
+                    String temp = Integer.toString(cursor.getInt(3));
+                    String intakes = Integer.toString(cursor.getInt(4));
+
+                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(temp)));
+                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(intakes)));
+                    xVals.add(date);
+                    CheckNumberData++;
+                }
+                cursor.close();
+                sql.close();
+
+                setChartData(); //차트 데이터셋 구성
             }
         });
 
@@ -191,7 +214,30 @@ public class ChartFrag extends Fragment {
         CoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //배열 초기화
+                entries1.clear();
+                entries2.clear();
 
+                SQLiteDatabase sql = dbHelper.getReadableDatabase();
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", now) AND drinkDT == \"americano\"", null);
+                int CheckNumberData = 0;
+
+                while (cursor.moveToNext()) {
+                    String id =Integer.toString(cursor.getInt(0));
+                    String date = cursor.getString(1).substring(11,16);
+                    String drinks = cursor.getString(2);
+                    String temp = Integer.toString(cursor.getInt(3));
+                    String intakes = Integer.toString(cursor.getInt(4));
+
+                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(temp)));
+                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(intakes)));
+                    xVals.add(date);
+                    CheckNumberData++;
+                }
+                cursor.close();
+                sql.close();
+
+                setChartData(); //차트 데이터셋 구성
             }
         });
 
@@ -199,7 +245,30 @@ public class ChartFrag extends Fragment {
         LaBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //배열 초기화
+                entries1.clear();
+                entries2.clear();
 
+                SQLiteDatabase sql = dbHelper.getReadableDatabase();
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", now) AND drinkDT == \"latte\"", null);
+                int CheckNumberData = 0;
+
+                while (cursor.moveToNext()) {
+                    String id =Integer.toString(cursor.getInt(0));
+                    String date = cursor.getString(1).substring(11,16);
+                    String drinks = cursor.getString(2);
+                    String temp = Integer.toString(cursor.getInt(3));
+                    String intakes = Integer.toString(cursor.getInt(4));
+
+                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(temp)));
+                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(intakes)));
+                    xVals.add(date);
+                    CheckNumberData++;
+                }
+                cursor.close();
+                sql.close();
+
+                setChartData(); //차트 데이터셋 구성
             }
         });
 
@@ -207,7 +276,30 @@ public class ChartFrag extends Fragment {
         MiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //배열 초기화
+                entries1.clear();
+                entries2.clear();
 
+                SQLiteDatabase sql = dbHelper.getReadableDatabase();
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", now) AND drinkDT == \"milk\"", null);
+                int CheckNumberData = 0;
+
+                while (cursor.moveToNext()) {
+                    String id =Integer.toString(cursor.getInt(0));
+                    String date = cursor.getString(1).substring(11,16);
+                    String drinks = cursor.getString(2);
+                    String temp = Integer.toString(cursor.getInt(3));
+                    String intakes = Integer.toString(cursor.getInt(4));
+
+                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(temp)));
+                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(intakes)));
+                    xVals.add(date);
+                    CheckNumberData++;
+                }
+                cursor.close();
+                sql.close();
+
+                setChartData(); //차트 데이터셋 구성
             }
         });
 

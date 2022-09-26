@@ -90,7 +90,7 @@ public class ChartFrag extends Fragment {
                 entries2.clear();
 
                 SQLiteDatabase sql = dbHelper.getReadableDatabase();
-                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = \"2022/08/29\"", null);
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now'))", null);
                 int CheckNumberData = 0;
 
                 while (cursor.moveToNext()) {
@@ -117,31 +117,7 @@ public class ChartFrag extends Fragment {
         WeekBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //배열 초기화
-                entries1.clear();
-                entries2.clear();
 
-                SQLiteDatabase sql = dbHelper.getReadableDatabase();
-                Cursor cursor = sql.rawQuery("SELECT strftime(\"%Y/%w\",dateTime)as date_time, tempDT, weightDT, colorDT  " +
-                        "FROM SensorData where time BETWEEN datetime(\"now\", \"-90days\") AND datetime(\"now\", \"localtime\") GROUP BY date_time", null);
-                int CheckNumberData = 0;
-
-                while (cursor.moveToNext()) {
-                    String id =Integer.toString(cursor.getInt(0));
-                    String date = cursor.getString(1).substring(11,16);
-                    String drinks = cursor.getString(2);
-                    String temp = Integer.toString(cursor.getInt(3));
-                    String intakes = Integer.toString(cursor.getInt(4));
-
-                    entries1.add(new Entry(CheckNumberData, Float.parseFloat(temp)));
-                    entries2.add(new Entry(CheckNumberData, Float.parseFloat(intakes)));
-                    xVals.add(date);
-                    CheckNumberData++;
-                }
-                cursor.close();
-                sql.close();
-
-                setChartData(); //차트 데이터셋 구성
             }
         });
 
@@ -156,7 +132,7 @@ public class ChartFrag extends Fragment {
                 entries2.clear();
 
                 SQLiteDatabase sql = dbHelper.getReadableDatabase();
-                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m\", dateTime) = \"2022/08\"", null);
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m\", dateTime) = strftime(\"%Y/%m\", date('now'))", null);
                 int CheckNumberData = 0;
 
                 while (cursor.moveToNext()) {
@@ -188,7 +164,7 @@ public class ChartFrag extends Fragment {
                 entries2.clear();
 
                 SQLiteDatabase sql = dbHelper.getReadableDatabase();
-                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", now) AND drinkDT == \"water\"", null);
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now')) AND drinkDT == \"water\"", null);
                 int CheckNumberData = 0;
 
                 while (cursor.moveToNext()) {
@@ -219,7 +195,7 @@ public class ChartFrag extends Fragment {
                 entries2.clear();
 
                 SQLiteDatabase sql = dbHelper.getReadableDatabase();
-                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", now) AND drinkDT == \"americano\"", null);
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now')) AND drinkDT == \"americano\"", null);
                 int CheckNumberData = 0;
 
                 while (cursor.moveToNext()) {
@@ -250,7 +226,7 @@ public class ChartFrag extends Fragment {
                 entries2.clear();
 
                 SQLiteDatabase sql = dbHelper.getReadableDatabase();
-                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", now) AND drinkDT == \"latte\"", null);
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now')) AND drinkDT == \"latte\"", null);
                 int CheckNumberData = 0;
 
                 while (cursor.moveToNext()) {
@@ -281,7 +257,7 @@ public class ChartFrag extends Fragment {
                 entries2.clear();
 
                 SQLiteDatabase sql = dbHelper.getReadableDatabase();
-                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", now) AND drinkDT == \"milk\"", null);
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now')) AND drinkDT == \"milk\"", null);
                 int CheckNumberData = 0;
 
                 while (cursor.moveToNext()) {
@@ -331,7 +307,7 @@ public class ChartFrag extends Fragment {
         lineDataSet2.setDrawHorizontalHighlightIndicator(false);
         lineDataSet2.setDrawHighlightIndicators(false);
         lineDataSet2.setDrawValues(true);
-        lineDataSet.setValueTextSize(8f);
+        lineDataSet2.setValueTextSize(8f);
 
         //데이터셋에 데이터 추가
         LineData lineData = new LineData(lineDataSet, lineDataSet2);
@@ -346,10 +322,17 @@ public class ChartFrag extends Fragment {
 
         YAxis yLAxis = chart.getAxisLeft();
         yLAxis.setTextColor(Color.BLACK);
+        yLAxis.setAxisLineWidth(1f);
+        yLAxis.setAxisLineColor(Color.BLACK);
 
         YAxis yRAxis = chart.getAxisRight();
-        yRAxis.setDrawLabels(false);
-        yRAxis.setDrawAxisLine(false);
+        yRAxis.setAxisLineColor(R.color.chart_temp);
+        yRAxis.setAxisLineWidth(1f);
+        yRAxis.setAxisMinimum(0f);
+        yRAxis.setAxisMaximum(100f);
+        yRAxis.setGranularity(10f);
+        yRAxis.setDrawLabels(true);
+        yRAxis.setDrawAxisLine(true);
         yRAxis.setDrawGridLines(false);
 
         Description description = new Description();

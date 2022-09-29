@@ -90,7 +90,7 @@ public class ChartFrag extends Fragment {
                 entries2.clear();
 
                 SQLiteDatabase sql = dbHelper.getReadableDatabase();
-                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now'))", null);
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = \"2022/09/26\"", null);
                 int CheckNumberData = 0;
 
                 while (cursor.moveToNext()) {
@@ -164,7 +164,7 @@ public class ChartFrag extends Fragment {
                 entries2.clear();
 
                 SQLiteDatabase sql = dbHelper.getReadableDatabase();
-                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now')) AND drinkDT == \"water\"", null);
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = \"2022/09/26\" AND drinkDT == \"water\"", null);
                 int CheckNumberData = 0;
 
                 while (cursor.moveToNext()) {

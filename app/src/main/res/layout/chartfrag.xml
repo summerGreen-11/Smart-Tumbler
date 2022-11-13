@@ -24,77 +24,12 @@
                     android:text="CHART"
                     android:textSize="20dp"
                     android:textStyle="bold" />
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="160dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:background="@drawable/weekly">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="165dp"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:text="JUL"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="80dp"
-                            android:layout_marginTop="70dp"
-                            android:src="@drawable/day1" />
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="80dp"
-                            android:layout_marginTop="70dp"
-                            android:src="@drawable/day_select" />
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="80dp"
-                            android:layout_marginTop="70dp"
-                            android:src="@drawable/day1" />
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="80dp"
-                            android:layout_marginTop="70dp"
-                            android:src="@drawable/day1" />
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="80dp"
-                            android:layout_marginTop="70dp"
-                            android:src="@drawable/day1" />
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="80dp"
-                            android:layout_marginTop="70dp"
-                            android:src="@drawable/day1" />
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="80dp"
-                            android:layout_marginTop="70dp"
-                            android:src="@drawable/day1" />
-
-                    </LinearLayout>
-                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="50dp"
                     android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"

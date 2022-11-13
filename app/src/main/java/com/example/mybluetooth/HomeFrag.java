@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.github.mikephil.charting.data.Entry;
+
 import org.w3c.dom.Text;
 
 public class HomeFrag extends Fragment {
@@ -25,6 +27,12 @@ public class HomeFrag extends Fragment {
 
     private TextView currentTemp;
     private ImageView waterImg;
+    private TextView waterPC;
+    
+    //요약 리포트 텍스트
+    private TextView reportF;
+    private TextView reportS;
+    private TextView reportT;
 
     @Nullable
     @Override
@@ -35,36 +43,69 @@ public class HomeFrag extends Fragment {
         currentTemp = (TextView) view.findViewById(R.id.current_temp);
         //섭취량 이미지
         waterImg = (ImageView) view.findViewById(R.id.water_homf_img);
+        //현재 섭취량
+        waterPC = (TextView) view.findViewById(R.id.waterPC);
 
-
-        //테스트 데이터 출력 전 세팅
-        testPrint = (TextView) view.findViewById(R.id.dataPrintTest);
+        //DB 처리
         dbHelper = new SensorDBHelper(getActivity().getApplicationContext());
-        //데이터 출력
-        try {
-            Cursor cursor = dbHelper.readRecord();
 
-            while (cursor.moveToNext()) {
-                int itemId = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry._ID));
-                int temp = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_TEMP));
-                int intakes = cursor.getInt(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_INTAKES));
-                String drinks = cursor.getString(cursor.getColumnIndexOrThrow(SensorContract.SensorEntry.COLUMN_DRINK));
+        //DB 데이터 저장
+        String id="";
+        String date="";
+        String drinks="";
+        String temp="";
+        String intakes="";
 
-                String result = " ID : " + Integer.toString(itemId) + "\n 온도: " +
-                        Integer.toString(temp) + "도, 무게: " +
-                        Integer.toString(intakes) + "g, 음료: " + drinks;
-                testPrint.setText(result);
+        SQLiteDatabase sql = dbHelper.getReadableDatabase();
+        Cursor cursor1 = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now')) " +
+                "ORDER BY dtID LIMIT 1", null);
 
-                //현재 온도 출력
-                currentTemp.setText(temp);
-            }
-            cursor.close();
+        while (cursor1.moveToNext()) {
+            temp = Integer.toString(cursor1.getInt(3));
+            intakes = Integer.toString(cursor1.getInt(4));
         }
-        catch (Exception e){
-            testPrint.setText("DATA EMPTY");
+        cursor1.close();
+        sql.close();
+
+        currentTemp.setText(temp);
+        waterPC.setText(intakes);
+
+        //일일섭취량 계산
+        int Dintakes=0;
+        Cursor cursor2 = sql.rawQuery("SELECT SUM(intakesDT) AS Dintake FROM SensorData " +
+                "WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now'))", null);
+
+        while (cursor2.moveToNext()) {
+            Dintakes = cursor2.getInt(0);
         }
+        cursor2.close();
+        sql.close();
 
-
+        //섭취량 이미지 변경
+        if(Dintakes==0) waterImg.setImageResource(R.drawable.water0);
+        else if(Dintakes<=1125) waterImg.setImageResource(R.drawable.bluecc);
+        else if(Dintakes<1500) waterImg.setImageResource(R.drawable.water75);
+        else waterImg.setImageResource(R.drawable.water100);
+        
+        //요약리포트
+        reportF = (TextView) view.findViewById(R.id.report_less);
+        reportS = (TextView) view.findViewById(R.id.report_const);
+        reportT = (TextView) view.findViewById(R.id.report_more);
+        if(Dintakes>=2500){ //초과
+            reportT.setTextColor(getResources().getColor(R.color.colorPrimary));
+            reportS.setTextColor(getResources().getColor(R.color.report_disable));
+            reportF.setTextColor(getResources().getColor(R.color.report_disable));
+        }
+        else if(Dintakes>=1500){ //유지
+            reportS.setTextColor(getResources().getColor(R.color.colorPrimary));
+            reportT.setTextColor(getResources().getColor(R.color.report_disable));
+            reportF.setTextColor(getResources().getColor(R.color.report_disable));
+        }
+        else{ //부족
+            reportF.setTextColor(getResources().getColor(R.color.colorPrimary));
+            reportT.setTextColor(getResources().getColor(R.color.report_disable));
+            reportS.setTextColor(getResources().getColor(R.color.report_disable));
+        }
 
 
         return view;

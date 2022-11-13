@@ -73,7 +73,7 @@
                 android:id="@+id/waterPC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="54"
+                android:text="00"
                 android:textSize="20dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -148,13 +148,15 @@
                 android:layout_marginLeft="42dp"
                 android:layout_marginTop="13dp"
                 android:src="@drawable/state_up" />
+
             <TextView
+                android:id="@+id/report_less"
                 android:layout_width="80dp"
                 android:layout_height="70dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="35dp"
-                android:textAlignment="center"
-                android:text="섭취량 부족"/>
+                android:text="섭취량 부족"
+                android:textAlignment="center" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -171,13 +173,15 @@
                 android:layout_marginLeft="42dp"
                 android:layout_marginTop="13dp"
                 android:src="@drawable/stable" />
+
             <TextView
+                android:id="@+id/report_const"
                 android:layout_width="80dp"
                 android:layout_height="70dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="35dp"
-                android:textAlignment="center"
-                android:text="섭취량 유지"/>
+                android:text="섭취량 유지"
+                android:textAlignment="center" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -194,13 +198,15 @@
                 android:layout_marginLeft="42dp"
                 android:layout_marginTop="13dp"
                 android:src="@drawable/state_down" />
+
             <TextView
+                android:id="@+id/report_more"
                 android:layout_width="80dp"
                 android:layout_height="70dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="35dp"
-                android:textAlignment="center"
-                android:text="섭취량 초과"/>
+                android:text="섭취량 초과"
+                android:textAlignment="center" />
         </RelativeLayout>
 
     </LinearLayout>

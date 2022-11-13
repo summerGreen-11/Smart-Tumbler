@@ -90,12 +90,12 @@ public class ChartFrag extends Fragment {
                 entries2.clear();
 
                 SQLiteDatabase sql = dbHelper.getReadableDatabase();
-                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = \"2022/09/26\"", null);
+                Cursor cursor = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date(\"now\"))", null);
                 int CheckNumberData = 0;
 
                 while (cursor.moveToNext()) {
                     String id =Integer.toString(cursor.getInt(0));
-                    String date = cursor.getString(1).substring(11,16);
+                    String date = cursor.getString(1).substring(14,19);
                     String drinks = cursor.getString(2);
                     String temp = Integer.toString(cursor.getInt(3));
                     String intakes = Integer.toString(cursor.getInt(4));

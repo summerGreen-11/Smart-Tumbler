@@ -43,7 +43,7 @@ import static android.text.TextUtils.split;
 public class BluetoothSetting extends AppCompatActivity {
 
     // GUI Components
-    private TextView mBluetoothStatus;
+    public static TextView mBluetoothStatus;
     private Button mScanBtn;
     private TextView readBuffer;
 
@@ -58,6 +58,8 @@ public class BluetoothSetting extends AppCompatActivity {
     public final static int REQUEST_ENABLE_BT = 1; // used to identify adding bluetooth names
     public final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
     public final static int CONNECTING_STATUS = 3; // used in bluetooth handler to identify message status
+
+    public String name="";
 
 
     @Override
@@ -125,6 +127,7 @@ public class BluetoothSetting extends AppCompatActivity {
             String message = intent.getStringExtra("message");
             Log.d("receiver", "Got message: " + message);
             readBuffer.setText(message);
+            mBluetoothStatus.setText("Connect: " + name);
         }
     };
 
@@ -197,6 +200,7 @@ public class BluetoothSetting extends AppCompatActivity {
             // Get the device MAC address, which is the last 17 chars in the View
             String info = ((TextView) v).getText().toString();
             final String address = info.substring(info.length() - 17);
+            name = info.substring(0,info.length() - 17);
 
             Intent intent = new Intent(getApplicationContext(),BTServices.class);
             intent.putExtra("bluetooth_device",address);

@@ -23,7 +23,6 @@ public class HomeFrag extends Fragment {
 
     //DB 연동
     private SensorDBHelper dbHelper;
-    private TextView testPrint;
 
     private TextView currentTemp;
     private ImageView waterImg;
@@ -50,11 +49,7 @@ public class HomeFrag extends Fragment {
         dbHelper = new SensorDBHelper(getActivity().getApplicationContext());
 
         //DB 데이터 저장
-        String id="";
-        String date="";
-        String drinks="";
         String temp="";
-        String intakes="";
 
         SQLiteDatabase sql = dbHelper.getReadableDatabase();
         Cursor cursor1 = sql.rawQuery("SELECT * FROM SensorData WHERE strftime(\"%Y/%m/%d\", dateTime) = strftime(\"%Y/%m/%d\", date('now')) " +
@@ -62,13 +57,10 @@ public class HomeFrag extends Fragment {
 
         while (cursor1.moveToNext()) {
             temp = Integer.toString(cursor1.getInt(3));
-            intakes = Integer.toString(cursor1.getInt(4));
+            //현재 온도 나타내기
+            currentTemp.setText(temp);
         }
         cursor1.close();
-        sql.close();
-
-        currentTemp.setText(temp);
-        waterPC.setText(intakes);
 
         //일일섭취량 계산
         int Dintakes=0;
@@ -81,11 +73,16 @@ public class HomeFrag extends Fragment {
         cursor2.close();
         sql.close();
 
+        //섭취량 퍼센트 계산
+        int itPC = 0;
+        //itPC  = Dintakes / 1500 * 100;
+        //waterPC.setText(itPC);
+
         //섭취량 이미지 변경
-        if(Dintakes==0) waterImg.setImageResource(R.drawable.water0);
-        else if(Dintakes<=1125) waterImg.setImageResource(R.drawable.bluecc);
-        else if(Dintakes<1500) waterImg.setImageResource(R.drawable.water75);
-        else waterImg.setImageResource(R.drawable.water100);
+        if(Dintakes==0) waterImg.setImageResource(R.drawable.water0); //0%
+        else if(Dintakes<=1125) waterImg.setImageResource(R.drawable.bluecc); //45%
+        else if(Dintakes<1500) waterImg.setImageResource(R.drawable.water75); //75%
+        else waterImg.setImageResource(R.drawable.water100); //100%
         
         //요약리포트
         reportF = (TextView) view.findViewById(R.id.report_less);

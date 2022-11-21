@@ -93,7 +93,7 @@
             android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:src="@drawable/fic0"/>
+            android:src="@drawable/fic40"/>
         <ImageView
             android:layout_width="24dp"
             android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
             android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/fic40"/>
+            android:src="@drawable/fic80"/>
         <ImageView
             android:layout_width="24dp"
             android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
             android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/fic100"/>
+            android:src="@drawable/fic40"/>
         <ImageView
             android:layout_width="24dp"
             android:layout_height="wrap_content"
@@ -215,16 +215,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="50dp"
+        android:paddingVertical="60dp"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/dataPrintTest"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:text="print sensor data"
-            android:paddingVertical="30dp"
-            android:textSize="16dp"/>
     </LinearLayout>
 
         </LinearLayout>

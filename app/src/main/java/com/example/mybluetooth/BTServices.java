@@ -286,9 +286,18 @@ public class BTServices extends Service {
                         //mByte= inS.read(buffer);
                         String readMessage = new String(buffer, 0, mByte);
                         sendMessage(readMessage);
+
                         try {
                             String[] array = readMessage.split(",");
-                            String drinks = array[0];
+                            int dChk = Integer.parseInt(array[0]);
+                            String drinks = "water";
+                            switch (dChk){
+                                case 0: drinks="water";
+                                case 1: drinks="americano";
+                                case 2: drinks="latte";
+                                case 3: drinks="milk";
+                                default:drinks="water";
+                            }
                             int temp = Integer.parseInt(array[1]);
                             int intakes = Integer.parseInt((array[2]));
                             dbHelper.insertRecord(drinks,temp,intakes);
